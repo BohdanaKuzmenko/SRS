@@ -1,0 +1,16 @@
+#header {
+    height: 4rem;
+    background-color: cornflowerblue;
+    color: white;
+    font-family: 'Righteous', cursive;
+    font-size: 20pt;
+    overflow: hidden;
+
+}
+#header.header-text {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
