@@ -25,7 +25,7 @@ export default class Table extends Reat.Component {
                 </div>
 
 
-                <table className="ui striped celled  selectable right-definition unstackable table">
+                <table className="ui center aligned striped celled  selectable right-definition unstackable table">
                     <Thead
                         tableHeaders={this.props.tableHeaders}
                         updateSortOrder={(id, order)=>this.props.updateSortOrder(id, order)}
@@ -37,6 +37,7 @@ export default class Table extends Reat.Component {
                     />
                     <Tfoot
                         onChangePage={(page)=>this.props.onChangePage(page)}
+                        currentPage={this.props.currentPage}
                     />
                 </table>
             </div>

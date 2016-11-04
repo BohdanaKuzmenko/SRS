@@ -61,30 +61,65 @@ export default class CandidatesTbody extends Reat.Component {
                     row.push(<td rowSpan={groupById[name].length}>{name}</td>)
                 }
                 Object.keys(candidates_header).map(function (key) {
-                    if (_.isEqual(key, "status")) {
-                        row.push(<td>
-                            <div className="ui buttons">
-                                <button id="reject"
-                                        className={_.isEqual(candidate['status'], "REJECTED") ?
-                                            "ui negative button" :
-                                            "ui button"}
-                                        onClick={self.onStatusChange.bind(self, candidate["id"], false)}>
-                                    Reject
-                                </button>
-                                <div className="or"></div>
-                                <button id="approve"
-                                        className={_.isEqual(candidate['status'], "ACCEPTED") ?
-                                            "ui positive button" :
-                                            "ui button"}
-                                        onClick={self.onStatusChange.bind(self, candidate["id"], true)}>
-                                    Accept
-                                </button>
-                            </div>
-                        </td>)
-                    } else {
-                        row.push(<td>{candidate[key]}</td>)
+                    switch (key) {
+                        case "status":
+                            row.push(<td>
+                                <div className="ui buttons">
+                                    <button id="reject"
+                                            className={_.isEqual(candidate['status'], "REJECTED") ?
+                                                "ui negative button" :
+                                                "ui button"}
+                                            onClick={self.onStatusChange.bind(self, candidate["id"], false)}>
+                                        Reject
+                                    </button>
+                                    <div className="or"></div>
+                                    <button id="approve"
+                                            className={_.isEqual(candidate['status'], "ACCEPTED") ?
+                                                "ui positive button" :
+                                                "ui button"}
+                                            onClick={self.onStatusChange.bind(self, candidate["id"], true)}>
+                                        Accept
+                                    </button>
+                                </div>
+                            </td>);
+                            break;
+                        case "source":
+                            switch (candidate[key]) {
+                                case "LINKEDIN":
+                                    row.push(
+                                        <td>
+                                            <a target="_blank" href={candidate["url"]}>
+                                               LinkedIn
+                                            </a>
+                                        </td>);
+                                    break;
+                                case "FACEBOOK":
+                                    row.push(
+                                        <td>
+                                            <a target="_blank" href={candidate["url"]}>
+                                                Facebook
+                                            </a>
+                                        </td>);
+                                    break;
+                                case "CUSTOM":
+                                    row.push(
+                                        <td>
+                                            <a target="_blank" href={candidate["url"]}>
+                                                {candidate["matched_firm"]}
+                                            </a>
+                                        </td>);
+                                    break;
+                                case "EMAIL":
+                                    row.push(<td>{candidate["matched_token"]}</td>);
+                                    break;
+                                default:
+                                    row.push(<td></td>);
+                                    break;
+                            }
+                            break;
+                        default:
+                            row.push(<td>{candidate[key]}</td>)
                     }
-
                 });
 
                 return <tr id={"candidate" + candidate["id"]}>{row}</tr>

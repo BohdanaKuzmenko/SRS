@@ -11,7 +11,6 @@
     "express": "4.14.0",
     "highcharts": "^4.2.6",
     "http-proxy": "1.14.0",
-    "jquery": "^2.2.4",
     "js-sha256": "^0.3.2",
     "jsdom": "^3.1.2",
     "moment": "^2.15.2",

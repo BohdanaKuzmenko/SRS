@@ -11,11 +11,17 @@ export default class Candidates extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentPage:null,
             queries: null,
             firstPage: null,
             previousPage: null,
             nextPage: null,
             lastPage: null,
+            pageSize: 15,
+            requestParams: {
+                requestSortParams: null,
+                filterParams: null
+            },
             tableHeaders: {
                 "first_name": {"field": "firstName", "label": "First Name", "sortIndex": null, "order": null},
                 "last_name": {"field": "lastName", "label": "Last Name", "sortIndex": null, "order": null},
@@ -31,10 +37,6 @@ export default class Candidates extends React.Component {
                 "firm_name": {"field": "firmName", "label": "Company", "sortIndex": null, "order": null},
                 "agency_name": {"field": "agencyName", "label": "Client", "sortIndex": null, "order": null},
                 "backdoor": {"field": "backdoor", "label": "Backdoor status", "sortIndex": null, "order": null}
-            },
-            requestParams: {
-                requestSortParams: null,
-                filterParams: null
             }
 
         }
@@ -66,16 +68,21 @@ export default class Candidates extends React.Component {
         });
 
         var queriesUrl = (_.isNull(notNullParams)) ?
-        QUERY + "/?pageSize=20" : QUERY + "/?pageSize=20&" + notNullParams.join("&");
+        QUERY + "/?pageSize=" + this.state.pageSize :
+        QUERY + "/?pageSize=" + this.state.pageSize + "&" + notNullParams.join("&");
         return queriesUrl
     }
+
 
 
     getTableData(queriesUrl) {
         var self = this;
         GET(queriesUrl, true).then(function (data) {
+            console.log(data)
             self.setState({
+
                 "queries": data['data'],
+                "currentPage":parseInt(data['currentPage'])+1,
                 "firstPage": data['firstPageUrl'],
                 "previousPage": data['prevPageUrl'],
                 "nextPage": data['nextPageUrl'],
@@ -100,7 +107,7 @@ export default class Candidates extends React.Component {
     }
 
     componentWillMount() {
-        this.getTableData(QUERY + "/?pageSize=20")
+        this.getTableData(QUERY + "/?pageSize=" + this.state.pageSize)
     }
 
     updateSortOrder(id, order) {
@@ -246,6 +253,7 @@ export default class Candidates extends React.Component {
                 <Table id="candidates"
                        tableData={this.state.queries}
                        tableHeaders={this.state.tableHeaders}
+                       currentPage={this.state.currentPage}
                        updateSortOrder={(id, order)=>this.updateSortOrder(id, order)}
                        onChangePage={(page) => this.onChangePage(page)}
                        onQueryDelete={(id)=> this.onQueryDelete(id)}
@@ -275,7 +283,6 @@ export default class Candidates extends React.Component {
                 />
                 <div className="external ui right fixed vertical menu">
                     <a className="item" onClick={this.onModal.bind(null, "add-from-file")}>
-
                         <div className="vertical-text">
                             <i className="green large plus icon"></i>
                             <i className="green large plus icon"></i>
@@ -285,9 +292,7 @@ export default class Candidates extends React.Component {
                     </a>
                     <a className="item" onClick={this.onModal.bind(null, "add-manually")}>
                         <i className="green big add user icon"></i>
-
                         <div className="vertical-text">
-
                             Add manually
                         </div>
 

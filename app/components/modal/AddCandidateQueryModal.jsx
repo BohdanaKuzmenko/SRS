@@ -10,7 +10,7 @@ export default class AddCandidatQueryModal extends React.Component {
             user: {
                 firstName: null,
                 lastName: null,
-                middleName: null,
+                middleName: "",
                 url: null,
                 firmName: null,
                 agencyName: null,
@@ -35,9 +35,12 @@ export default class AddCandidatQueryModal extends React.Component {
         var user_init_completed = true;
 
         Object.keys(this.state.user).map(function (key) {
-            if (_.isNull(self.state.user[key])) {
-                user_init_completed = false
+            if (!_.isEqual(key, 'middleName')){
+                if (_.isNull(self.state.user[key])) {
+                    user_init_completed = false
+                }
             }
+
         });
         if (user_init_completed) {
             this.props.func(this.state.user);
@@ -45,7 +48,7 @@ export default class AddCandidatQueryModal extends React.Component {
                 "user": {
                     firstName: null,
                     lastName: null,
-                    middleName: null,
+                    middleName: "",
                     url: null,
                     firmName: null,
                     agencyName: null,

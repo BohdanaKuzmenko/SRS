@@ -94,6 +94,12 @@ i.green.big.file.excel.outline.icon {
     text-align: center;
 }
 
+button#log-out {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+}
+
 /*settings-tab*/
 .submit-button {
     position: fixed;

@@ -7,11 +7,16 @@ export default class PossibleMatches extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentPage:null,
+            firstPage: null,
+            previousPage: null,
+            nextPage: null,
+            lastPage: null,
             queries: null,
             candidates: null,
             candidatesHeaders: {
                 "matched_token": {"label": "Text Matches"},
-                "url": {"label": "Source"},
+                "source": {"label": "Source"},
                 "status": {"label": "Match Status"}
             },
             queriesHeaders: {
@@ -22,6 +27,21 @@ export default class PossibleMatches extends React.Component {
         }
     }
 
+    setCandidates(url){
+        var self = this;
+        GET(url, true).then(function (data) {
+            console.log(data)
+            self.setState({
+                "candidates": data['data'],
+                "currentPage": parseInt(data['currentPage'])+1,
+                "firstPage": data['firstPageUrl'],
+                "previousPage": data['prevPageUrl'],
+                "nextPage": data['nextPageUrl'],
+                "lastPage": data['lastPageUrl']
+            })
+        })
+    }
+
     componentWillMount() {
         var self = this;
         GET(QUERY + "/?viewAll=true").then(function (data) {
@@ -30,13 +50,41 @@ export default class PossibleMatches extends React.Component {
             })
 
         });
-        GET(CANDIDATES).then(function (data) {
-            self.setState({"candidates": data})
-        })
+        this.setCandidates(CANDIDATES)
     }
 
     onCandidateStatusChange(id, status) {
         PATCH(CANDIDATES + "/" + id + "?status=" + status).then(function(){console.log("ok")})
+    }
+    onChangePage(pageStatus) {
+
+        switch (pageStatus) {
+            case "first":
+                console.log(this.state.firstPage)
+                if (!_.isNull(this.state.firstPage)) {
+                    this.setCandidates(this.state.firstPage)
+                }
+                break;
+            case "previous":
+                console.log(this.state.previousPage)
+                if (!_.isNull(this.state.previousPage)) {
+                    this.setCandidates(this.state.previousPage)
+                }
+                break;
+            case "next":
+                console.log(this.state.nextPage)
+                if (!_.isNull(this.state.nextPage)) {
+                    this.setCandidates(this.state.nextPage)
+                }
+                break;
+            case "last":
+                console.log(this.state.lastPage)
+                if (!_.isNull(this.state.lastPage)) {
+                    this.setCandidates(this.state.lastPage)
+                }
+                break;
+
+        }
     }
 
 
@@ -60,9 +108,11 @@ export default class PossibleMatches extends React.Component {
                 <CandidatesTable
                     candidatesHeaders={this.state.candidatesHeaders}
                     queriesHeaders={this.state.queriesHeaders}
+                    currentPage={this.state.currentPage}
                     candidates={this.state.candidates}
                     queries={this.state.queries}
                     onCandidateStatusChange={(id, status)=> this.onCandidateStatusChange(id, status)}
+                    onChangePage={(status)=> this.onChangePage(status)}
                 />
 
             </div>

@@ -6,13 +6,11 @@ module.exports = {
         root: path.resolve('./app'),
         extensions: ['', '.js']
     },
-    proxy: {
-        "**": "http://localhost:8080"
-    },
+    // proxy: {
+    //     "**": "http://192.168.1.52:8080"
+    // },
 
     entry: [
-        'webpack-dev-server/client?http://localhost:3000', // WebpackDevServer host and port
-        'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
         './app/main' // Your appʼs entry point
     ],
     output: {
@@ -24,19 +22,19 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx?$/,
-                loaders: ['react-hot', 'babel?presets[]=es2015&presets[]=react'],
+                loaders: ['babel?presets[]=es2015&presets[]=react'],
                 exclude: /node_modules/,
                 include: path.join(__dirname, 'app')
             }
         ]
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new webpack.ProvidePlugin({
             "_": "underscore",
             "React": "react",
             "ReactDOM": "react-dom",
-            "Highcharts": "highcharts"
+            "Highcharts": "highcharts",
+            // "$":"jquery"
         })
     ]
 };

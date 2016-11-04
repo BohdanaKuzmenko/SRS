@@ -1,7 +1,6 @@
 import React from 'react'
 import Dropzone from 'react-dropzone';
-import Button from 'components/Button.jsx'
-import InputField from 'components/InputField.jsx'
+import {FILE_UPLOAD} from 'urls/Urls.jsx'
 
 export default class FileUpload extends React.Component {
 
@@ -36,31 +35,36 @@ export default class FileUpload extends React.Component {
             var fd = new FormData();
             fd.append('file', this.state.file);
 
+            $('#' + self.props.id).modal('toggle')
+
+            $('.drug-and-drop>div').css({
+                    width: "200px",
+                    height: "200px",
+                    border: "2px dashed rgb(102, 102, 102)",
+                    boxShadow: "none",
+                    borderRadius: "5px",
+                    background: "#edeef0"
+                }
+            )
+
             $.ajax({
-                url: 'http://localhost:8080/api/import-queries',
+                url: FILE_UPLOAD,
                 data: fd,
                 processData: false,
                 contentType: false,
                 type: 'POST',
+
+
+            }).then(function () {
+                self.setState({
+                    file: null,
+                    agency: null,
+                });
+                self.props.updateTable();
+
             })
         }
-        this.setState({
-            file: null,
-            agency: null,
-        });
 
-        $('#' + self.props.id).modal('toggle')
-        self.props.updateTable();
-
-        $('.drug-and-drop>div').css({
-                width: "200px",
-                height: "200px",
-                border: "2px dashed rgb(102, 102, 102)",
-                boxShadow: "none",
-                borderRadius: "5px",
-                background: "#edeef0"
-            }
-        )
 
 
     }

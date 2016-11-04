@@ -1,18 +1,33 @@
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
+const path = require('path');
+const express = require('express');
+var httpProxy = require('http-proxy');
+var apiProxy = httpProxy.createProxyServer();
 
-new WebpackDevServer(webpack(config), {
-    publicPath: config.output.publicPath,
-    hot: true,
-    historyApiFallback: true,
-    proxy: {
-        "/attorneys/analytics/api/*": "http://localhost:5001"
-    }
-}).listen(3000, '0.0.0.0',  function (err, result) {
-    if (err) {
-        return console.log(err);
-    }
+var app = function () {
+    const apiHost = 'http://127.0.0.1:8080';
+    const app = express();
+    const indexPath = path.join(__dirname, '/index.html');
+    const dist = express.static(path.join(__dirname, '/dist'));
+    const staticDir = express.static(path.join(__dirname, '/static'));
 
-    console.log('Listening at http://localhost:3000/');
-});
+    app.use('/dist', dist);
+    app.use('/static', staticDir);
+    app.get('/', function (_, res) {
+        res.sendFile(indexPath)
+    });
+    app.get("/start-session", function (req, res) {
+        apiProxy.web(req, res, {target: apiHost});
+    });
+    app.get("/login", function (req, res) {
+        apiProxy.web(req, res, {target: apiHost});
+    });
+    app.get("/api/*", function (req, res) {
+        apiProxy.web(req, res, {target: apiHost});
+    });
+
+
+    console.log(apiHost);
+    return app
+};
+
+app().listen(3000, '0.0.0.0');
