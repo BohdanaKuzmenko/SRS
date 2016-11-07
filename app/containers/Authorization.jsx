@@ -19,16 +19,21 @@ export default class Authorization extends React.Component {
         return !_.isEqual(this.state.authAllow, prevState.authAllow)
     }
 
+    checkEnter(event){
+        if (event.keyCode == 13) {
+            this.onSubmit()
+        }
+    }
+
     onLogin(component, event) {
         var login = event.target.value;
         if (component.state.login != login) {
             component.setState({
                 "login": _.isEmpty(login) ? null : login
-            })
+            });
+            component.forceUpdate()
         }
-        if (event.keyCode == 13) {
-            component.onSubmit()
-        }
+        component.checkEnter(event)
     }
 
     onPassWord(component,event) {
@@ -36,11 +41,10 @@ export default class Authorization extends React.Component {
         if (component.state.password != password) {
             component.setState({
                 "password": _.isEmpty(password) ? null : password
-            })
+            });
+            component.forceUpdate()
         }
-        if (event.keyCode == 13) {
-            component.onSubmit()
-        }
+        component.checkEnter(event)
     }
 
     generateAuthObject(login, password) {
@@ -94,7 +98,7 @@ export default class Authorization extends React.Component {
                     <li>Try typing your password in a text editor and pasting it into the "Password" field.</li>
 
                 </ul>
-            </div>)
+            </div>);
         return (
             <div style={divStyle} className="ui middle aligned centered page grid ">
                 <div className="left aligned seven wide column">
@@ -108,7 +112,7 @@ export default class Authorization extends React.Component {
                                         key="login-area"
                                         type="text"
                                         placeholder="login"
-                                        onKeyDown={this.onLogin.bind(this,this)}
+                                        onKeyUp={this.onLogin.bind(this,this)}
                                     />
 
                                 </div>
@@ -120,7 +124,7 @@ export default class Authorization extends React.Component {
                                         key="input password"
                                         type="password"
                                         placeholder="password"
-                                        onKeyDown={this.onPassWord.bind(this,this)}
+                                        onKeyUp={this.onPassWord.bind(this,this)}
                                     />
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
 import Reat, {PropTypes} from 'react'
 
-export default class Tfoot extends Reat.Component {
+export default class QueriesTfoot extends Reat.Component {
 
     onPageChange(page){
         this.props.onChangePage(page)

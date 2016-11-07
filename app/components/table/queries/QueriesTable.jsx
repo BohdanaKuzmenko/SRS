@@ -1,9 +1,9 @@
 import Reat, {PropTypes} from 'react'
-import Thead from 'components/table/queries/Thead.jsx'
-import Tbody from 'components/table/queries/Tbody.jsx'
-import Tfoot from 'components/table/queries/Tfoot.jsx'
+import Thead from 'components/table/queries/QueriesThead.jsx'
+import Tbody from 'components/table/queries/QueriesTbody.jsx'
+import Tfoot from 'components/table/queries/QueriesTfoot.jsx'
 import InputField from 'components/InputField.jsx'
-export default class Table extends Reat.Component {
+export default class QueriesTable extends Reat.Component {
 
     checkEnterButton(component, event){
         if (event.keyCode == 13) {
@@ -44,7 +44,7 @@ export default class Table extends Reat.Component {
         )
     }
 }
-Table.propTypes = {
+QueriesTable.propTypes = {
     tableData: PropTypes.array.isRequired,
     tableHeaders: PropTypes.object.isRequired,
     updateSortOrder: PropTypes.func.isRequired,

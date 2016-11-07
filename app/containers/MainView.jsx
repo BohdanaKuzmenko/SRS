@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import Menu from 'components/menu/Menu.jsx'
 import Candidates from 'containers/menuTabs/Candidates.jsx'
-import PossibleMatches from 'containers/menuTabs/PossibleMatches.jsx'
+import Queries from 'containers/menuTabs/Queries.jsx'
 import Settings from 'containers/menuTabs/Settings.jsx'
 import Header from "components/header/Header.jsx"
 
@@ -10,11 +10,11 @@ export default class MainView extends React.Component {
         super(props)
         this.state = {
             tabs: {
+                queries: <Queries/>,
                 candidates: <Candidates/>,
-                matches: <PossibleMatches/>,
                 settings: <Settings userName={this.props.userName}/>
             },
-            activeTab: "candidates"
+            activeTab: "queries"
         }
     }
 

@@ -1,6 +1,6 @@
 import Reat, {PropTypes} from 'react'
 
-export default class Thead extends Reat.Component {
+export default class QueriesThead extends Reat.Component {
 
     onSortChange(self, id) {
         var icon = $("#" + id['key'] + " > i");
@@ -48,7 +48,7 @@ export default class Thead extends Reat.Component {
     }
 
 }
-Thead.propTypes = {
+QueriesThead.propTypes = {
     tableHeaders: PropTypes.object.isRequired,
     updateSortOrder: PropTypes.func.isRequired
 };

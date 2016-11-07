@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from 'components/Button.jsx'
-import ModalInputComponent from 'components/modal/ModalInputComponent.jsx'
+import ModalInputComponent from 'components/modal/content/ModalInputComponent.jsx'
 
 export default class AddCandidatQueryModal extends React.Component {
 
@@ -70,27 +70,27 @@ export default class AddCandidatQueryModal extends React.Component {
             <div>
                 <div id ="user-form" className="ui grid">
                     <ModalInputComponent
-                        fieldTitle="Input First Name"
+                        fieldTitle="First Name"
                         onChangeField={(value)=>this.onFirstName(value, "firstName")}
                     />
                     <ModalInputComponent
-                        fieldTitle="Input Last Name"
+                        fieldTitle="Last Name"
                         onChangeField={(value)=>this.onFirstName(value, "lastName")}
                     />
                     <ModalInputComponent
-                        fieldTitle="Input Middle Name"
+                        fieldTitle="Middle Name"
                         onChangeField={(value)=>this.onFirstName(value, "middleName")}
                     />
                     <ModalInputComponent
-                        fieldTitle="Input Url"
+                        fieldTitle="Url"
                         onChangeField={(value)=>this.onFirstName(value, "url")}
                     />
                     <ModalInputComponent
-                        fieldTitle="Input Company Name"
+                        fieldTitle="Company Name"
                         onChangeField={(value)=>this.onFirstName(value, "firmName")}
                     />
                     <ModalInputComponent
-                        fieldTitle="Input Client Name"
+                        fieldTitle="Client Name"
                         onChangeField={(value)=>this.onFirstName(value, "agencyName")}
                     />
 

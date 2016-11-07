@@ -3,7 +3,7 @@ import {DELETE} from 'http/HTTP.jsx'
 import {QUERY} from 'urls/Urls.jsx'
 import UUID from 'uuid-js'
 import moment from 'moment'
-export default class Tbody extends Reat.Component {
+export default class QueriesTbody extends Reat.Component {
 
 
     generateId() {
@@ -30,7 +30,7 @@ export default class Tbody extends Reat.Component {
                     className = query[columnName] ? "positive" : "negative";
                     query[columnName] = query[columnName] ? "Yes" : "No"
                 }
-                if (row_index == 5) {
+                if (columnName == "last_check_date") {
                     var checkedSourcesDates = [];
                     var uncheckedSources = [];
                     Object.keys(lastUpdateColumns).map(function (source) {
@@ -44,15 +44,16 @@ export default class Tbody extends Reat.Component {
 
                     var lastCheck = _.isEmpty(checkedSourcesDates) ?
                         "Has not been checked yet" :
-                        _.max(checkedSourcesDates)._i
+                        new Date(_.max(checkedSourcesDates)._i).toLocaleString()
 
-                    var tooltipText = [uncheckedSources.join(','),
+                    var tooltipText = [uncheckedSources.join(', '),
                         (uncheckedSources.length>1)? "have":"has",
-                        "not been checked yet"].join(' ')
+                        "not been checked yet"].join(' ');
+
                     var note = (_.isEmpty(uncheckedSources) || _.isEmpty(checkedSourcesDates)) ?
                         "" : (
                         <div className="arrow-right-1">
-                            <div  className="data-tooltip"
+                            <div className="data-tooltip"
                                   data-tooltip={tooltipText}></div>
                         </div>
                     );
@@ -91,7 +92,7 @@ export default class Tbody extends Reat.Component {
     }
 
 }
-Tbody.propTypes = {
+QueriesTbody.propTypes = {
     tableData: PropTypes.array.isRequired,
     tableHeader: PropTypes.object.isRequired
 };

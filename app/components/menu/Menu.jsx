@@ -15,11 +15,11 @@ export default class Menu extends React.Component{
     render(){
         return (
             <div id="main-menu" className="ui left fixed vertical menu">
-                <a id="candidates"
+                <a id="queries"
                    className="item active"
                    onClick={this.onTabChange.bind(this)}>
                     Candidates</a>
-                <a id="matches"
+                <a id="candidates"
                    className="item"
                    onClick={this.onTabChange.bind(this)}>
                     Possible matches
