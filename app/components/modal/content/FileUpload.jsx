@@ -8,23 +8,31 @@ export default class FileUpload extends React.Component {
         super(props);
         this.state = {
             file: null,
-            agency: null,
+            fileStatus: null
         }
     }
 
     onDrop(acceptedFile) {
-        this.setState({
-            "file": acceptedFile[0]
-        });
-        $('.drug-and-drop>div').css(
-            {
-                background: "#FCFFF5",
-                boxShadow: " 0 0 0 1px #A3C293 inset,0 0 0 0 transparent",
-                border: "2px rgb(26, 83, 27)",
-                color: "#1A531B"
-
-            }
-        );
+        var file = acceptedFile[0];
+        if (_.isEqual(file.type, "text/csv")){
+            this.setState({
+                "file": file,
+                "fileStatus": "completed"
+            });
+            $('.drug-and-drop>div').css(
+                {
+                    background: "#FCFFF5",
+                    boxShadow: " 0 0 0 1px #A3C293 inset,0 0 0 0 transparent",
+                    border: "2px rgb(26, 83, 27)",
+                    color: "#1A531B"
+                }
+            );
+        }else{
+            this.setState({
+                "fileStatus": "wrongType",
+                "file": null,
+            });
+        }
 
     }
 
@@ -35,7 +43,7 @@ export default class FileUpload extends React.Component {
             var fd = new FormData();
             fd.append('file', this.state.file);
 
-            $('#' + self.props.id).modal('toggle')
+            $('#' + self.props.id).modal('toggle');
 
             $('.drug-and-drop>div').css({
                     width: "200px",
@@ -45,7 +53,7 @@ export default class FileUpload extends React.Component {
                     borderRadius: "5px",
                     background: "#edeef0"
                 }
-            )
+            );
 
             $.ajax({
                 url: FILE_UPLOAD,
@@ -58,34 +66,52 @@ export default class FileUpload extends React.Component {
             }).then(function () {
                 self.setState({
                     file: null,
-                    agency: null,
+                    fileStatus: null
                 });
                 self.props.updateTable();
-
             })
         }
-
-
-
     }
 
     render() {
-        var title_status = (_.isNull(this.state.file)) ?
-            <div className="ui mini message">
-                <div className="content">
-                    <div className="header">
-                        <i className="small plus icon"></i>
-                        Upload new file
-                    </div>
-                </div>
-            </div> :
-            <div className="file-upload-message">
-                <div className="header">
-                    You have chosen file: {this.state.file.name}
-                </div>
-                <p>Click button below to upload</p>
-            </div>
 
+        var title_status;
+        switch (this.state.fileStatus) {
+            case "completed":
+                title_status = (
+                    <div className="file-upload-message">
+                        <div className="header">
+                            You have chosen file: {this.state.file.name}
+                        </div>
+                        <p>Click button below to upload</p>
+                    </div>
+                );
+                break;
+            case "wrongType":
+                title_status = (
+                    <div className="ui mini message">
+                        <div className="content">
+                            <div className="header">
+                                <i className="small plus icon"/>
+                                Wrong type of file. Try another one.
+                            </div>
+                        </div>
+                    </div>
+                );
+                break;
+            default:
+                title_status= (
+                    <div className="ui mini message">
+                        <div className="content">
+                            <div className="header">
+                                <i className="small plus icon"/>
+                                Upload new file
+                            </div>
+                        </div>
+                    </div>
+                )
+
+        }
         return (
             <div className="ui center aligned grid">
                 <div className="ui row">
