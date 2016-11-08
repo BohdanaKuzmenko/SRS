@@ -188,7 +188,10 @@ button#log-out {
     border-bottom: 10px solid transparent;
 
 
-    transform: rotate(-45deg);
+    /*transform: rotate(-154deg);*/
+}
+.popup.top.transition{
+    width:300px;
 }
 
 td {

@@ -2,7 +2,6 @@ import Reat, {PropTypes} from 'react'
 import Thead from 'components/table/queries/QueriesThead.jsx'
 import Tbody from 'components/table/queries/QueriesTbody.jsx'
 import Tfoot from 'components/table/queries/QueriesTfoot.jsx'
-import InputField from 'components/InputField.jsx'
 export default class QueriesTable extends Reat.Component {
 
     checkEnterButton(component, event){
@@ -25,6 +24,7 @@ export default class QueriesTable extends Reat.Component {
                 </div>
 
 
+
                 <table className="ui center aligned striped celled  selectable right-definition unstackable table">
                     <Thead
                         tableHeaders={this.props.tableHeaders}
@@ -33,6 +33,7 @@ export default class QueriesTable extends Reat.Component {
                     <Tbody
                         tableData={this.props.tableData}
                         tableHeader={this.props.tableHeaders}
+                        lastUpdateDateHeaders={this.props.lastUpdateDateHeaders}
                         onQueryDelete={(id)=>this.props.onQueryDelete(id)}
                     />
                     <Tfoot
@@ -47,6 +48,7 @@ export default class QueriesTable extends Reat.Component {
 QueriesTable.propTypes = {
     tableData: PropTypes.array.isRequired,
     tableHeaders: PropTypes.object.isRequired,
+    lastUpdateDateHeaders:PropTypes.object.isRequired,
     updateSortOrder: PropTypes.func.isRequired,
     onChangePage: PropTypes.func.isRequired,
     onQueryDelete: PropTypes.func.isRequired,

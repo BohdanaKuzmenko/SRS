@@ -8,8 +8,7 @@ export default class Menu extends React.Component{
     onTabChange(item) {
         $(".item").removeClass("active");
         $(item.target).addClass("active");
-        var {chooseMenu} = this.props;
-        chooseMenu($(item.target).attr("id"))
+        this.props.chooseMenu($(item.target).attr("id"))
     }
 
     render(){
@@ -33,4 +32,4 @@ export default class Menu extends React.Component{
 }
 Menu.propTypes = {
     chooseMenu: PropTypes.func.isRequired
-}
+};

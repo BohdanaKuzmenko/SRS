@@ -6,7 +6,6 @@ export default class ModalWindow extends React.Component {
     }
 
     componentDidMount() {
-        var self = this;
         $('.ui.modal#' + this.props.id).modal({detachable: false});
     }
 
@@ -31,4 +30,4 @@ ModalWindow.propTypes={
     id: PropTypes.string.isRequired,
     header: PropTypes.string.isRequired,
     content: PropTypes.any.isRequired
-}
+};

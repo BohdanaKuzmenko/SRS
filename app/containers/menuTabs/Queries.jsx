@@ -11,7 +11,7 @@ export default class Queries extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage:null,
+            currentPage: null,
             queries: null,
             firstPage: null,
             previousPage: null,
@@ -23,20 +23,22 @@ export default class Queries extends React.Component {
                 filterParams: null
             },
             tableHeaders: {
-                "first_name": {"field": "firstName", "label": "First Name", "sortIndex": null, "order": null},
-                "last_name": {"field": "lastName", "label": "Last Name", "sortIndex": null, "order": null},
-                "middle_name": {"field": "middleName", "label": "Middle Name", "sortIndex": null, "order": null},
-                "matches_found": {"field": "candidates", "label": "Found Matches", "sortIndex": null, "order": null},
-                "load_date": {"field": "loadDate", "label": "Load Date", "sortIndex": null, "order": null},
-                "last_check_date": {
-                    "field": "lastCheckDate",
-                    "label": "Last Check Update",
-                    "sortIndex": null,
-                    "order": null
-                },
-                "firm_name": {"field": "firmName", "label": "Company", "sortIndex": null, "order": null},
-                "agency_name": {"field": "agencyName", "label": "Client", "sortIndex": null, "order": null},
-                "backdoor": {"field": "backdoor", "label": "Backdoor status", "sortIndex": null, "order": null}
+                first_name: {field: "firstName", label: "First Name", sortIndex: null, order: null},
+                last_name: {field: "lastName", label: "Last Name", sortIndex: null, order: null},
+                middle_name: {field: "middleName", label: "Middle Name", sortIndex: null, order: null},
+                matches_found: {field: "candidates", label: "Found Matches", sortIndex: null, order: null},
+                load_date: {field: "loadDate", label: "Load Date", sortIndex: null, order: null},
+                last_check_date: {field: "lastCheckDate", label: "Last Check Update", sortIndex: null, order: null},
+                firm_name: {field: "firmName", label: "Company", sortIndex: null, order: null},
+                agency_name: {field: "agencyName", label: "Client", sortIndex: null, order: null},
+                backdoor: {field: "backdoor", label: "Backdoor status", sortIndex: null, order: null}
+            },
+
+            lastUpdateDateHeaders: {
+                custom_site_check_date: "Company Site",
+                facebook_check_date: "Facebook",
+                linkedin_check_date: "LinkedIn",
+                email_check_date: "Email"
             }
 
         }
@@ -48,7 +50,8 @@ export default class Queries extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return (!_.isEqual(this.state.queries, nextState.queries) || !_.isEqual(JSON.stringify(this.state.requestParams), JSON.stringify(nextState.requestParams))) || !_.isEqual(this.state.tableHeaders, nextState.tableHeaders)
+        return (!_.isEqual(this.state.queries, nextState.queries) || !_.isEqual(JSON.stringify(this.state.requestParams),
+                JSON.stringify(nextState.requestParams))) || !_.isEqual(this.state.tableHeaders, nextState.tableHeaders)
 
     }
 
@@ -67,22 +70,19 @@ export default class Queries extends React.Component {
             }
         });
 
-        var queriesUrl = (_.isNull(notNullParams)) ?
+        return (_.isNull(notNullParams)) ?
         QUERY + "/?pageSize=" + this.state.pageSize :
         QUERY + "/?pageSize=" + this.state.pageSize + "&" + notNullParams.join("&");
-        return queriesUrl
-    }
 
+    }
 
 
     getTableData(queriesUrl) {
         var self = this;
         GET(queriesUrl, true).then(function (data) {
-            console.log(data)
             self.setState({
-
                 "queries": data['data'],
-                "currentPage":parseInt(data['currentPage'])+1,
+                "currentPage": parseInt(data['currentPage']) + 1,
                 "firstPage": data['firstPageUrl'],
                 "previousPage": data['prevPageUrl'],
                 "nextPage": data['nextPageUrl'],
@@ -95,7 +95,7 @@ export default class Queries extends React.Component {
         var self = this;
         var contentType = 'application/json; charset=utf-8';
         var jsonItem = JSON.stringify(item);
-        POST(QUERY, jsonItem, contentType).then(function (data) {
+        POST(QUERY, jsonItem, contentType).then(function () {
             self.updateTable()
         });
     }
@@ -151,7 +151,7 @@ export default class Queries extends React.Component {
             header[id]["sortIndex"] = (_.isNull(order)) ? null : 1
 
         }
-        this.setState({"tableHeaders": header})
+        this.setState({"tableHeaders": header});
         this.onSortParamChanged(header)
     }
 
@@ -186,7 +186,7 @@ export default class Queries extends React.Component {
         var requestParam = $.extend({}, this.state.requestParams);
         if (!_.isEqual(this.state.requestParams.filterParams, filter_value)) {
             requestParam["filterParams"] = (_.isEmpty(filter_value)) ?
-                null : {"paramKey": "search", "paramValue": filter_value}
+                null : {"paramKey": "search", "paramValue": filter_value};
             this.setState({"requestParams": requestParam})
         }
     }
@@ -208,15 +208,14 @@ export default class Queries extends React.Component {
 
             var sortParams = [];
             sortedFieldsToSortBy.map(function (field) {
-                var order = (_.isEqual(field.key['order'], "desc")) ? "" : "-"
+                var order = (_.isEqual(field.key['order'], "desc")) ? "" : "-";
                 sortParams.push(order + field.key["field"])
             });
 
-            var sortParamsStr = sortParams.join(',')
-
+            var sortParamsStr = sortParams.join(',');
 
             if (!_.isEqual(this.state.requestParams.requestSortParams, sortParamsStr)) {
-                requestParam["requestSortParams"] = {"paramKey": "sortBy", "paramValue": sortParamsStr}
+                requestParam["requestSortParams"] = {"paramKey": "sortBy", "paramValue": sortParamsStr};
                 this.setState({"requestParams": requestParam})
             }
         }
@@ -253,6 +252,7 @@ export default class Queries extends React.Component {
                 <Table id="candidates"
                        tableData={this.state.queries}
                        tableHeaders={this.state.tableHeaders}
+                       lastUpdateDateHeaders={this.state.lastUpdateDateHeaders}
                        currentPage={this.state.currentPage}
                        updateSortOrder={(id, order)=>this.updateSortOrder(id, order)}
                        onChangePage={(page) => this.onChangePage(page)}
@@ -284,21 +284,21 @@ export default class Queries extends React.Component {
                 <div className="external ui right fixed vertical menu">
                     <a className="item" onClick={this.onModal.bind(null, "add-from-file")}>
                         <div className="vertical-text">
-                            <i className="green large plus icon"></i>
-                            <i className="green large plus icon"></i>
+                            <i className="green large plus icon"/>
+                            <i className="green large plus icon"/>
                             Upload from file
                         </div>
 
                     </a>
                     <a className="item" onClick={this.onModal.bind(null, "add-manually")}>
-                        <i className="green big add user icon"></i>
+                        <i className="green big add user icon"/>
                         <div className="vertical-text">
                             Add manually
                         </div>
 
                     </a>
                     <a className="item">
-                        <i className="green big file excel outline icon"></i>
+                        <i className="green big file excel outline icon"/>
                         <div className="vertical-text">
                             Export to excel
                         </div>

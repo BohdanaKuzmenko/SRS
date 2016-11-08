@@ -7,7 +7,7 @@ export default class CandidatesTable extends Reat.Component {
 
     render() {
         return (
-            <table className="ui center aligned celled right-definition unstackable table">
+            <table className="ui center structured aligned celled right-definition unstackable table">
                 <CandidatesThead
                     tableHeaders={this.props.candidatesHeaders}
                 />
