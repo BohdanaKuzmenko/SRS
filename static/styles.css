@@ -151,8 +151,12 @@ button#log-out {
 }
 .ui.text {
     line-height: 3;
+    font-weight: 600;
     color: grey;
     font-family: 'Lato', sans-serif;
+}
+.ui.text>span {
+    color: #305075;
 }
 #add-from-file .content div.drug-and-drop>div {
     width: auto!important;
@@ -190,10 +194,18 @@ button#log-out {
 
     /*transform: rotate(-154deg);*/
 }
-.popup.top.transition{
+.popup.transition{
     width:300px;
+
+}
+.custom.popup{
+    top:-40px!important;
 }
 
 td {
     position: relative;
+}
+
+#delete-tooltip{
+    z-index: 100;
 }
