@@ -30,7 +30,6 @@ export default class Candidates extends React.Component {
     setCandidates(url){
         var self = this;
         GET(url, true).then(function (data) {
-            console.log(data)
             self.setState({
                 "candidates": data['data'],
                 "currentPage": parseInt(data['currentPage'])+1,
@@ -60,25 +59,21 @@ export default class Candidates extends React.Component {
 
         switch (pageStatus) {
             case "first":
-                console.log(this.state.firstPage)
                 if (!_.isNull(this.state.firstPage)) {
                     this.setCandidates(this.state.firstPage)
                 }
                 break;
             case "previous":
-                console.log(this.state.previousPage)
                 if (!_.isNull(this.state.previousPage)) {
                     this.setCandidates(this.state.previousPage)
                 }
                 break;
             case "next":
-                console.log(this.state.nextPage)
                 if (!_.isNull(this.state.nextPage)) {
                     this.setCandidates(this.state.nextPage)
                 }
                 break;
             case "last":
-                console.log(this.state.lastPage)
                 if (!_.isNull(this.state.lastPage)) {
                     this.setCandidates(this.state.lastPage)
                 }
