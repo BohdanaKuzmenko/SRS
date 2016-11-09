@@ -21,8 +21,7 @@ export default class AddCandidatQueryModal extends React.Component {
 
     onFirstName(event, field_name) {
         var user = $.extend({}, this.state.user);
-        var value = (_.isEmpty(event.target.value)) ? null : event.target.value;
-        user[field_name] = value
+        user[field_name] = (_.isEmpty(event.target.value)) ? null : event.target.value;
         if (this.state.user != user) {
             this.setState({
                 "user": user
@@ -72,26 +71,32 @@ export default class AddCandidatQueryModal extends React.Component {
                     <ModalInputComponent
                         fieldTitle="First Name"
                         onChangeField={(value)=>this.onFirstName(value, "firstName")}
+                        important={true}
                     />
                     <ModalInputComponent
                         fieldTitle="Last Name"
                         onChangeField={(value)=>this.onFirstName(value, "lastName")}
+                        important={true}
                     />
                     <ModalInputComponent
-                        fieldTitle="Middle Name"
+                        fieldTitle="Middle Name&nbsp;&nbsp;"
                         onChangeField={(value)=>this.onFirstName(value, "middleName")}
+                        important={false}
                     />
                     <ModalInputComponent
                         fieldTitle="Url"
                         onChangeField={(value)=>this.onFirstName(value, "url")}
+                        important={true}
                     />
                     <ModalInputComponent
                         fieldTitle="Company Name"
                         onChangeField={(value)=>this.onFirstName(value, "firmName")}
+                        important={true}
                     />
                     <ModalInputComponent
                         fieldTitle="Client Name"
                         onChangeField={(value)=>this.onFirstName(value, "agencyName")}
+                        important={true}
                     />
 
                 </div>

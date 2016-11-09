@@ -13,6 +13,7 @@ export default class ModalInputComponent extends React.Component {
                 <div className="six wide right aligned column">
                     <div className="ui text">
                         {this.props.fieldTitle}
+                        <span>{(this.props.important)?"*":""}</span>
                     </div>
                 </div>
                 <div className="six wide column">
@@ -28,7 +29,8 @@ export default class ModalInputComponent extends React.Component {
         )
     }
 }
-// ModalInputComponent.propTypes={
-//     fieldTitle: PropTypes.string.isRequired,
-//     onChangeField: PropTypes.function.isRequired
-// }
+ModalInputComponent.propTypes={
+    fieldTitle: PropTypes.string.isRequired,
+    onChangeField: PropTypes.func.isRequired,
+    important: PropTypes.bool.isRequired
+};
