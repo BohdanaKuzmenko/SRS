@@ -89,10 +89,9 @@ export default class FileUpload extends React.Component {
                 break;
             case "wrongType":
                 title_status = (
-                    <div className="ui mini message">
+                    <div className="ui mini negative message">
                         <div className="content">
                             <div className="header">
-                                <i className="small plus icon"/>
                                 Wrong type of file. Try another one.
                             </div>
                         </div>
