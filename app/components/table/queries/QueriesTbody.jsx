@@ -4,6 +4,7 @@ import {QUERY} from 'urls/Urls.jsx'
 import UUID from 'uuid-js'
 import moment from 'moment'
 import jsxToString from 'jsx-to-string'
+
 export default class QueriesTbody extends React.Component {
 
 
@@ -20,9 +21,9 @@ export default class QueriesTbody extends React.Component {
         this.props.onQueryDelete(id)
     }
 
-    generateTooltip(uncheckedSources) {
+    generateTooltip(uncheckedSources, cellId) {
         var sources = uncheckedSources.map(function (source) {
-            return <li>{source}</li>
+            return <li key={cellId+source}>{source}</li>
         });
         return (<div class="tooltip left aligned"><h5>Unchecked sources:</h5>
             <ul>{sources}</ul>
@@ -43,8 +44,9 @@ export default class QueriesTbody extends React.Component {
             }
         });
 
+        var cellId = index + row_index;
         if (_.isEmpty(checkedSourcesDates)) {
-            return <td key={self.generateId()} id={index + row_index}>Has not been checked yet</td>
+            return <td key={self.generateId()} id={cellId}>Has not been checked yet</td>
         }
         else {
             var lastCheckDate = new Date(_.max(checkedSourcesDates)._i).toLocaleString();
@@ -52,22 +54,22 @@ export default class QueriesTbody extends React.Component {
                 null :
                 (
                     <div className="data-tooltip left aligned"
-                         data-html={jsxToString(self.generateTooltip(uncheckedSources))}
-                         data-position="top right"
+                         data-html={jsxToString(self.generateTooltip(uncheckedSources, cellId))}
                          data-variation="basic">
                         <div className="arrow-right-1"/>
                     </div>
                 );
-            return <td key={self.generateId()} id={index + row_index}>
+            return <td key={self.generateId()} id={cellId}>
                 {tooltip}
                 {lastCheckDate}
             </td>
         }
     }
 
+
     generateBody(data, header) {
         var self = this;
-        var tbody = data.map(function (query, index) {
+        return data.map(function (query, index) {
             var row = Object.keys(header).map(function (columnName, row_index) {
                 var className = "";
                 if (_.isBoolean(query[columnName])) {
@@ -103,20 +105,37 @@ export default class QueriesTbody extends React.Component {
 
             var id = query["id"];
             row.push(
-                <td
-                    id={id}
-                    key={self.generateId()}
-                    className="collapsing"
-                    onClick={self.onRowRemove.bind(self, id)}>
-                    <i className="remove large blue user icon"/>
+                <td key={self.generateId()}><i className="remove large blue user icon"/>
+                    <div className="ui custom popup hidden">
+                        <div className="ui center aligned grid">
+                            <div>Do you really want to delete query?</div>
+                            <div className="ui row">
+                                <button className="ui positive button" onClick={self.props.onQueryDelete.bind(self, id)}>Yes</button>
+                                <button className="ui negative button" onClick={self.test.bind(self)}> No</button>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             );
             return <tr key={self.generateId()} id={index}>{row}</tr>
         });
-        return tbody
+    }
+
+    test(){
+        $('.custom.popup').popup('hide all');
+
     }
 
     componentDidUpdate() {
+
+        $('.remove.large.blue.user.icon')
+            .popup({
+                popup: $('.custom.popup'),
+                position : 'left center',
+                on: 'click',
+                inline:true
+            });
+
         $(".data-tooltip").popup({
             hoverable: true,
             inline: true,
@@ -125,6 +144,15 @@ export default class QueriesTbody extends React.Component {
     }
 
     componentDidMount() {
+
+        $('.remove.large.blue.user.icon')
+            .popup({
+                popup: $('.custom.popup'),
+                position : 'left center',
+                on: 'click',
+                inline:true
+            });
+
         $(".data-tooltip").popup({
             hoverable: true,
             inline: true,
@@ -143,5 +171,6 @@ export default class QueriesTbody extends React.Component {
 QueriesTbody.propTypes = {
     tableData: PropTypes.array.isRequired,
     tableHeader: PropTypes.object.isRequired,
-    lastUpdateDateHeaders: PropTypes.object.isRequired
+    lastUpdateDateHeaders: PropTypes.object.isRequired,
+    onQueryDelete:PropTypes.func.isRequired
 };

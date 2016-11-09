@@ -36,7 +36,6 @@ export default class CandidatesTbody extends Reat.Component {
         var idToName = {};
         queries.map(function (person) {
             var person_name = Object.keys(queries_header).map(function (header) {
-
                 return person[header]
             }).join(" ");
             idToName[person["id"]] = person_name
@@ -54,16 +53,18 @@ export default class CandidatesTbody extends Reat.Component {
         });
 
 
-        var test = Object.keys(groupById).map(function (name) {
+        return  Object.keys(groupById).map(function (name) {
             return groupById[name].map(function (candidate, index) {
                 var row = [];
+                var key = self.generateId();
                 if (index == 0) {
-                    row.push(<td rowSpan={groupById[name].length}>{name}</td>)
+                    row.push(<td key={key} rowSpan={groupById[name].length}>{name}</td>)
                 }
                 Object.keys(candidates_header).map(function (key) {
+                    var cellKey = self.generateId();
                     switch (key) {
                         case "status":
-                            row.push(<td>
+                            row.push(<td key={cellKey}>
                                 <div className="ui buttons">
                                     <button id="reject"
                                             className={_.isEqual(candidate['status'], "REJECTED") ?
@@ -87,7 +88,7 @@ export default class CandidatesTbody extends Reat.Component {
                             switch (candidate[key]) {
                                 case "LINKEDIN":
                                     row.push(
-                                        <td>
+                                        <td key={cellKey}>
                                             <a target="_blank" href={candidate["url"]}>
                                                LinkedIn
                                             </a>
@@ -95,7 +96,7 @@ export default class CandidatesTbody extends Reat.Component {
                                     break;
                                 case "FACEBOOK":
                                     row.push(
-                                        <td>
+                                        <td key={cellKey}>
                                             <a target="_blank" href={candidate["url"]}>
                                                 Facebook
                                             </a>
@@ -103,17 +104,17 @@ export default class CandidatesTbody extends Reat.Component {
                                     break;
                                 case "CUSTOM":
                                     row.push(
-                                        <td>
+                                        <td key={cellKey}>
                                             <a target="_blank" href={candidate["url"]}>
                                                 {candidate["matched_firm"]}
                                             </a>
                                         </td>);
                                     break;
                                 case "EMAIL":
-                                    row.push(<td>{candidate["matched_token"]}</td>);
+                                    row.push(<td key={cellKey}><a>Firm's Email</a></td>);
                                     break;
                                 default:
-                                    row.push(<td></td>);
+                                    row.push(<td key={cellKey}></td>);
                                     break;
                             }
                             break;
@@ -126,9 +127,6 @@ export default class CandidatesTbody extends Reat.Component {
             })
 
         });
-        return test
-
-
     }
 
     render() {
