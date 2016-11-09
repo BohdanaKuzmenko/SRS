@@ -1,7 +1,7 @@
 import React from 'react'
 import Table from 'components/table/queries/QueriesTable.jsx'
 import {GET, POST, DELETE} from 'http/HTTP.jsx'
-import {QUERY} from 'urls/Urls.jsx'
+import {QUERY, EXPORT} from 'urls/Urls.jsx'
 import ModalWindow from 'components/modal/ModalWindow.jsx'
 import AddCandidateQueryModal from 'components/modal/content/AddCandidateQueryModal.jsx'
 import FileUpload from 'components/modal/content/FileUpload.jsx'
@@ -281,6 +281,7 @@ export default class Queries extends React.Component {
                     />}
 
                 />
+
                 <div className="external ui right fixed vertical menu">
                     <a className="item" onClick={this.onModal.bind(null, "add-from-file")}>
                         <div className="vertical-text">
@@ -297,7 +298,7 @@ export default class Queries extends React.Component {
                         </div>
 
                     </a>
-                    <a className="item">
+                    <a className="item" href={EXPORT}>
                         <i className="green big file excel outline icon"/>
                         <div className="vertical-text">
                             Export to excel

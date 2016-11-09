@@ -6,3 +6,4 @@ export const QUERY = '/api/rest/query';
 export const CANDIDATES = '/api/rest/candidate';
 export const SETTINGS = '/api/settings';
 export const FILE_UPLOAD = '/api/import-queries';
+export const EXPORT = '/api/rest/query/export';
