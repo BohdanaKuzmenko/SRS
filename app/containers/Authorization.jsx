@@ -54,24 +54,36 @@ export default class Authorization extends React.Component {
         }
     }
 
+    getSavedLogin(){
+        return $('.login input').val()
+    }
+
+    getSavedPassword(){
+        return $('.password input').val()
+    }
+
     onSubmit() {
         var self = this;
         const {setAuthState} = this.props;
-        if (!(_.isNull(this.state.login) || _.isNull(this.state.password))) {
+
+        var login = _.isNull(this.state.login)?this.getSavedLogin():this.state.login;
+        var password = _.isNull(this.state.password)?this.getSavedPassword():this.state.password;
+
+        if (!(_.isEmpty(login) || _.isEmpty(password))) {
             var contentType = 'application/x-www-form-urlencoded; charset=utf-8';
-            var user = {username: self.state.login};
+            var user = {username: login};
             POST(START_SESSION, user, contentType).then(function (data) {
                 var skey = data['skey'];
                 var rkey = data['rkey'];
-                var baseEncodePass = sha256([skey, self.state.password].join(';'));
+                var baseEncodePass = sha256([skey, password].join(';'));
                 var encodedPass = sha256([rkey, baseEncodePass].join(';'));
-                var authData = self.generateAuthObject(self.state.login, encodedPass);
+                var authData = self.generateAuthObject(login, encodedPass);
                 POST(LOGIN, authData, contentType)
                     .then(
                         function (data) {
-                            if (_.isEqual(data, '{status:"OK"}')) {
-                                self.setState({"authData": true})
-                                setAuthState(true, self.state.login);
+                            if (_.isEqual(JSON.parse(data)['status'], "OK")) {
+                                self.setState({"authData": true});
+                                setAuthState(true, login);
                             }
                         },
                         function () {
