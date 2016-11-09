@@ -1,15 +1,12 @@
-import Reat, {PropTypes} from 'react'
+import {Component, PropTypes} from 'react'
 
-export default class CandidatesThead extends Reat.Component {
-
-
+export default class CandidatesThead extends Component {
 
     generateHeader(header) {
-        var self = this;
         var header_items = [];
         header_items.push(<th className="three wide" key={"empty"}>Initial candidate</th>);
         Object.keys(header).map(function (key) {
-            var colClass = (!_.isEqual(key, "status"))? "":"one wide"
+            var colClass = (!_.isEqual(key, "status"))? "":"one wide";
             header_items.push(<th key={key} className={colClass} id={key}>{header[key]["label"]}</th>)
         });
 

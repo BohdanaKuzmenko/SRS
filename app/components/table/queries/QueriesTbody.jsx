@@ -23,7 +23,7 @@ export default class QueriesTbody extends React.Component {
 
     generateTooltip(uncheckedSources, cellId) {
         var sources = uncheckedSources.map(function (source) {
-            return <li key={cellId+source}>{source}</li>
+            return <li key={cellId + source}>{source}</li>
         });
         return (<div class="tooltip left aligned"><h5>Unchecked sources:</h5>
             <ul>{sources}</ul>
@@ -102,7 +102,6 @@ export default class QueriesTbody extends React.Component {
 
             });
 
-
             var id = query["id"];
             row.push(
                 <td key={self.generateId()}><i className="remove large blue user icon"/>
@@ -110,8 +109,10 @@ export default class QueriesTbody extends React.Component {
                         <div className="ui center aligned grid">
                             <div>Do you really want to delete query?</div>
                             <div className="ui row">
-                                <button className="ui positive button" onClick={self.props.onQueryDelete.bind(self, id)}>Yes</button>
-                                <button className="ui negative button" onClick={self.test.bind(self)}> No</button>
+                                <button className="ui positive button"
+                                        onClick={self.props.onQueryDelete.bind(self, id)}>Yes
+                                </button>
+                                <button className="ui negative button" onClick={self.hidePopup.bind(self)}> No</button>
                             </div>
                         </div>
                     </div>
@@ -121,19 +122,18 @@ export default class QueriesTbody extends React.Component {
         });
     }
 
-    test(){
+    hidePopup() {
         $('.custom.popup').popup('hide all');
 
     }
 
-    componentDidUpdate() {
-
+    initializePopups() {
         $('.remove.large.blue.user.icon')
             .popup({
                 popup: $('.custom.popup'),
-                position : 'left center',
+                position: 'left center',
                 on: 'click',
-                inline:true
+                inline: true
             });
 
         $(".data-tooltip").popup({
@@ -143,21 +143,12 @@ export default class QueriesTbody extends React.Component {
         });
     }
 
+    componentDidUpdate() {
+        this.initializePopups()
+    }
+
     componentDidMount() {
-
-        $('.remove.large.blue.user.icon')
-            .popup({
-                popup: $('.custom.popup'),
-                position : 'left center',
-                on: 'click',
-                inline:true
-            });
-
-        $(".data-tooltip").popup({
-            hoverable: true,
-            inline: true,
-            on: 'hover',
-        });
+        this.initializePopups()
     }
 
     render() {
@@ -172,5 +163,5 @@ QueriesTbody.propTypes = {
     tableData: PropTypes.array.isRequired,
     tableHeader: PropTypes.object.isRequired,
     lastUpdateDateHeaders: PropTypes.object.isRequired,
-    onQueryDelete:PropTypes.func.isRequired
+    onQueryDelete: PropTypes.func.isRequired
 };

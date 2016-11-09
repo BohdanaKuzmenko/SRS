@@ -1,11 +1,11 @@
-export function GET(url, returnHeaders, async) {
+export function GET(url, returnHeaders, async=true) {
     var responseData = {};
-    var asyncron = (async == false) ? false : true
+    var asynchronous = async!= false;
     console.log("GET: " + url);
     return $.ajax({
         type: 'GET',
         url: url,
-        async: asyncron,
+        async: asynchronous,
         success: function (response, textStatus, request) {
             if (returnHeaders == true) {
                 responseData['data'] = response;

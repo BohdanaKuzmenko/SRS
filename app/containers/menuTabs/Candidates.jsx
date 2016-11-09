@@ -47,13 +47,12 @@ export default class Candidates extends React.Component {
             self.setState({
                 "queries": data
             })
-
         });
         this.setCandidates(CANDIDATES)
     }
 
     onCandidateStatusChange(id, status) {
-        PATCH(CANDIDATES + "/" + id + "?status=" + status).then(function(){console.log("ok")})
+        PATCH(CANDIDATES + "/" + id + "?status=" + status)
     }
     onChangePage(pageStatus) {
 

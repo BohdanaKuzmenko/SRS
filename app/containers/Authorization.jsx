@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react'
-import Button from 'components/Button.jsx'
+import Button from 'components/buttons/Button.jsx'
 import {POST} from 'http/HTTP.jsx'
 import {START_SESSION, LOGIN, TEST} from 'urls/Urls.jsx'
 import sha256 from 'js-sha256'
+import LoginErrorMessage from 'components/messages/login/LoginErrorMessage.jsx'
 
 export default class Authorization extends React.Component {
 
@@ -94,23 +95,8 @@ export default class Authorization extends React.Component {
     }
 
     render() {
-        var divStyle = {
-            height: "500px"
-        };
-        var authState = this.state.authAllow ?
-            "" :
-            (<div className="ui negative message">
-                <div className="header">
-                    Unable to log in.
-                </div>
-                <p>Please check that you have entered your login and password correctly.</p>
-                <ul>
-                    <li>Is the Caps Lock safely turned off?</li>
-                    <li>Maybe you are using the wrong input language? (e.g. German vs. English)</li>
-                    <li>Try typing your password in a text editor and pasting it into the "Password" field.</li>
-
-                </ul>
-            </div>);
+        var divStyle = {height: "500px"};
+        var authState = this.state.authAllow ? null : <LoginErrorMessage/>;
         return (
             <div style={divStyle} className="ui middle aligned centered page grid ">
                 <div className="left aligned seven wide column">

@@ -1,6 +1,9 @@
 import React from 'react'
 import Dropzone from 'react-dropzone';
 import {FILE_UPLOAD} from 'urls/Urls.jsx'
+import InitialMessage from 'components/messages/file_upload/InitialMessage.jsx'
+import WrongFileType from 'components/messages/file_upload/WrongFileType.jsx'
+import SuccessfullyUploaded from 'components/messages/file_upload/SuccessfullyUploaded.jsx'
 
 export default class FileUpload extends React.Component {
 
@@ -78,37 +81,13 @@ export default class FileUpload extends React.Component {
         var title_status;
         switch (this.state.fileStatus) {
             case "completed":
-                title_status = (
-                    <div className="file-upload-message">
-                        <div className="header">
-                            You have chosen file: {this.state.file.name}
-                        </div>
-                        <p>Click button below to upload</p>
-                    </div>
-                );
+                title_status = <SuccessfullyUploaded file_name={this.state.file.name}/>;
                 break;
             case "wrongType":
-                title_status = (
-                    <div className="ui mini negative message">
-                        <div className="content">
-                            <div className="header">
-                                Wrong type of file. Try another one.
-                            </div>
-                        </div>
-                    </div>
-                );
+                title_status = <WrongFileType/>;
                 break;
             default:
-                title_status= (
-                    <div className="ui mini message">
-                        <div className="content">
-                            <div className="header">
-                                <i className="small plus icon"/>
-                                Upload new file
-                            </div>
-                        </div>
-                    </div>
-                )
+                title_status= <InitialMessage/>;
 
         }
         return (

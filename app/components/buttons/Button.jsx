@@ -1,10 +1,6 @@
 import React, {PropTypes} from "react"
 
 export default class Button extends React.Component{
-    constructor(props){
-        super(props)
-    }
-
     render(){
         var {buttonTitle, submit} = this.props;
         return (
@@ -17,4 +13,4 @@ export default class Button extends React.Component{
 Button.propTypes = {
     buttonTitle: PropTypes.string.isRequired,
     submit: PropTypes.func.isRequired
-}
+};

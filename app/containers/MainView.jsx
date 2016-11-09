@@ -7,7 +7,7 @@ import Header from "components/header/Header.jsx"
 
 export default class MainView extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             tabs: {
                 queries: <Queries/>,

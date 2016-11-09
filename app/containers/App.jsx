@@ -6,7 +6,7 @@ import {GET_AUTH_USER} from 'urls/Urls.jsx'
 
 export default class App extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             auth: false,
             userName: null
@@ -31,7 +31,6 @@ export default class App extends React.Component {
     shouldComponentUpdate(prevProps, prevState){
         return (this.state.auth != prevState.auth)
     }
-
 
     render() {
 

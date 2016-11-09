@@ -1,59 +1,18 @@
 import React, {PropTypes} from 'react'
 import InputField from 'components/InputField.jsx'
-import Button from 'components/Button.jsx'
+import Button from 'components/buttons/Button.jsx'
 import {GET, PUT} from 'http/HTTP.jsx'
 import {SETTINGS} from 'urls/Urls.jsx'
 
 export default class Settings extends React.Component {
     constructor(props) {
-        super(props)
-
+        super(props);
         this.state = {
             emailStatus: null,
             checkDaysStatus: null,
             email: null,
             checkDays: null,
         }
-    }
-
-    changeLabelClass(id, state) {
-        console.log("changeLabelClass")
-        console.log(id)
-        switch (state) {
-            case "negative":
-                console.log("negative")
-                console.log($("#" + id))
-                $("#" + id)
-                    .removeClass("green")
-                    .removeClass("blue")
-                    .addClass("red")
-
-                break;
-            case "positive":
-                console.log("positive")
-                $("#" + id)
-                    .removeClass("red")
-                    .removeClass("blue")
-                    .addClass("green");
-                break;
-            case "neutral":
-                $("#" + id)
-                    .removeClass("red")
-                    .removeClass("green")
-                    .addClass("blue");
-                break;
-        }
-    }
-
-    validateEmail(email) {
-        var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-
-    validateCheckDays(value) {
-        var re = /^\d+$/;
-        return re.test(value);
-        // return !isNaN(value)
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -63,58 +22,49 @@ export default class Settings extends React.Component {
             (!_.isEqual(this.state.checkDaysStatus, nextState.checkDaysStatus))
     }
 
+    validateInput(value, regex){
+        return regex.test(value)
+    }
 
-
-    onEmailEntered(email) {
-        if (!_.isEmpty(email)) {
-            if (this.validateEmail(email)) {
-                this.setState({"email": email});
-                if (this.state.emailStatus != null) {
-                    this.setState({"emailStatus": null});
+    checkInput(value, regexToValidate, stateElement, statusStateElement, wrongInputMessage, emptyInputMessage){
+        if (!_.isEmpty(value)) {
+            if (this.validateInput(value, regexToValidate)) {
+                this.setState({[stateElement]: value});
+                if (this.state[statusStateElement] != null) {
+                    this.setState({[statusStateElement]: null});
                 }
             }
-        else{
-            this.setState({"email": null});
-            if (this.state.emailStatus != this.props.WRONG_EMAIL) {
-                this.setState({"emailStatus": this.props.WRONG_EMAIL});
+            else {
+                this.setState({[stateElement]: null});
+                if (this.state[statusStateElement] != wrongInputMessage) {
+                    this.setState({[statusStateElement]: wrongInputMessage});
+                }
             }
-        }
         }
         else {
-            this.setState({"email": null});
-            if (this.state.emailStatus != this.props.INPUT_EMAIL) {
-                this.setState({"emailStatus": this.props.INPUT_EMAIL});
+            this.setState({[stateElement]: null});
+            if (this.state[statusStateElement]!= emptyInputMessage) {
+                this.setState({[statusStateElement]: emptyInputMessage});
             }
         }
+    }
+
+    onEmailEntered(email) {
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var wrongEmail = this.props.WRONG_EMAIL;
+        var emptyEmail = this.props.INPUT_EMAIL;
+        this.checkInput(email, regex, "email", "emailStatus", wrongEmail, emptyEmail)
     }
 
     onCheckingPeriodEntered(days) {
-        if (!_.isEmpty(days)) {
-            if (this.validateCheckDays(days)) {
-                this.setState({"checkDays": days});
-                if (this.state.checkDaysStatus != null) {
-                    this.setState({"checkDaysStatus": null});
-                }
-            }
-        else {
-            this.setState({"checkDays": null});
-            if (this.state.checkDaysStatus != this.props.WRONG_CHECK_DAYS) {
-                this.setState({"checkDaysStatus": this.props.WRONG_CHECK_DAYS});
-            }
-        }
-        }
-        else {
-            this.setState({"checkDays": null});
-            if (this.state.checkDaysStatus != this.props.INPUT_CHECK_DAYS) {
-                this.setState({"checkDaysStatus": this.props.INPUT_CHECK_DAYS});
-            }
-        }
+        var regex = /^\d+$/;
+        var wrongCheckDays = this.props.WRONG_CHECK_DAYS;
+        var emptyCheckDays = this.props.INPUT_CHECK_DAYS;
+        this.checkInput(days, regex, "checkDays", "checkDaysStatus", wrongCheckDays, emptyCheckDays)
     }
-
 
     approveSettings() {
         if (!_.isNull(this.state.email) && !_.isNull(this.state.checkDays)) {
-            console.log("Approve")
             var url = SETTINGS + "/?username=" + this.props.userName;
             var settings = {
                 "email": this.state.email,
@@ -123,9 +73,7 @@ export default class Settings extends React.Component {
             PUT(url, JSON.stringify(settings)).then(function (data) {
             })
         }
-
     }
-
 
     componentDidMount() {
         var self = this;
@@ -136,9 +84,8 @@ export default class Settings extends React.Component {
 
                 $('#email').find('input:text').val(email);
                 $('#checkDays').find('input:text').val(checkDays);
-                self.onEmailEntered(email)
+                self.onEmailEntered(email);
                 self.onCheckingPeriodEntered(checkDays.toString())
-
             })
     }
 
@@ -146,13 +93,14 @@ export default class Settings extends React.Component {
     render() {
         var emailStatus = (_.isNull(this.state.emailStatus)) ?
             "" :
-            <div id="email-input" className={"ui left pointing " +this.state.emailStatus.status+" basic label"}>
+            <div id="email-input" className={"ui left pointing " + this.state.emailStatus.status + " basic label"}>
                 {this.state.emailStatus.label}
             </div>;
 
         var checkDaysStatus = (_.isNull(this.state.checkDaysStatus)) ?
             "" :
-            <div id="check-days-input"  className={"ui left pointing " +this.state.checkDaysStatus.status+" basic label"}>
+            <div id="check-days-input"
+                 className={"ui left pointing " + this.state.checkDaysStatus.status + " basic label"}>
                 {this.state.checkDaysStatus.label}
             </div>;
 
@@ -170,7 +118,7 @@ export default class Settings extends React.Component {
                                 <InputField
                                     inputType="text"
                                     placeholder=""
-                                    onBlur={(event)=>this.onEmailEntered(event.target.value)}
+                                    onChange={(event)=>this.onEmailEntered(event.target.value)}
                                 />
                                 {emailStatus}
                             </div>
@@ -187,7 +135,7 @@ export default class Settings extends React.Component {
                                 <InputField
                                     inputType="text"
                                     placeholder=""
-                                    onBlur={(event)=>this.onCheckingPeriodEntered(event.target.value)}
+                                    onChange={(event)=>this.onCheckingPeriodEntered(event.target.value)}
                                 />
                                 {checkDaysStatus}
                             </div>
@@ -205,12 +153,10 @@ export default class Settings extends React.Component {
 }
 
 Settings.defaultProps = {
-    INPUT_EMAIL: {label: "Input emails for alerts", status:"blue"},
-    EMAIL_SATISFIED: {label: "Email satisfied", status:"green"},
-    WRONG_EMAIL: {label: "Wrong email, try another one", status:"red"},
-    INPUT_CHECK_DAYS: {label: "Input checking period", status:"blue"},
-    CHECK_DAYS_SATISFIED: {label: "Check days field is valid", status:"green"},
-    WRONG_CHECK_DAYS: {label: "Only numbers required", status:"red"},
+    INPUT_EMAIL: {label: "Input emails for alerts", status: "blue"},
+    WRONG_EMAIL: {label: "Wrong email, try another one", status: "red"},
+    INPUT_CHECK_DAYS: {label: "Input checking period", status: "blue"},
+    WRONG_CHECK_DAYS: {label: "Only numbers required", status: "red"},
 };
 
 Settings.propTypes = {

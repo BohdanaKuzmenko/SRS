@@ -1,11 +1,11 @@
 import React from 'react'
-import Button from 'components/Button.jsx'
+import Button from 'components/buttons/Button.jsx'
 import ModalInputComponent from 'components/modal/content/ModalInputComponent.jsx'
 
-export default class AddCandidatQueryModal extends React.Component {
+export default class AddCandidateQueryModal extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             user: {
                 firstName: null,
@@ -58,9 +58,6 @@ export default class AddCandidatQueryModal extends React.Component {
             $('#' + this.props.id)
                 .modal('toggle')
             ;
-        }
-        else {
-            console.log("not ok")
         }
     }
 

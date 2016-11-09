@@ -19,7 +19,7 @@ export default class Header extends React.Component {
         return <div id="header">
             <div className="header-text">
               <button id="log-out" className="ui big vk circular icon button" onClick={this.logOff.bind(this)}>
-                    <i className="sign out icon"></i>
+                    <i className="sign out icon"/>
                 </button>
             </div>
         </div>

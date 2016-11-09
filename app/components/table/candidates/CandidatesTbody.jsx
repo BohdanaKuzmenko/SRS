@@ -1,7 +1,8 @@
-import Reat, {PropTypes} from 'react'
+import {Component, PropTypes} from 'react'
 import UUID from 'uuid-js'
+import AcceptRejectButtonGroup from 'components/buttons/AcceptRejectButtonGroup.jsx'
 
-export default class CandidatesTbody extends Reat.Component {
+export default class CandidatesTbody extends Component {
 
 
     generateId() {
@@ -9,36 +10,13 @@ export default class CandidatesTbody extends Reat.Component {
         return uuid4.toString();
     }
 
-    onStatusChange(id, status) {
-        if (status) {
-            this.setAccepted(id);
-            this.props.onCandidateStatusChange(id, "ACCEPTED")
-        }
-        else {
-            this.setRejected(id);
-            this.props.onCandidateStatusChange(id, "REJECTED")
-        }
-    }
-
-    setAccepted(id) {
-        $("tr#candidate" + id + " button#reject").removeClass("negative");
-        $("tr#candidate" + id + " button#approve").addClass("positive");
-    }
-
-    setRejected(id) {
-        $("tr#candidate" + id + " button#reject").addClass("negative");
-        $("tr#candidate" + id + " button#approve").removeClass("positive");
-    }
-
-
     generateBody(queries, candidates, queries_header, candidates_header) {
         var self = this;
         var idToName = {};
         queries.map(function (person) {
-            var person_name = Object.keys(queries_header).map(function (header) {
+            idToName[person["id"]] = Object.keys(queries_header).map(function (header) {
                 return person[header]
             }).join(" ");
-            idToName[person["id"]] = person_name
         });
 
         var groupById = {};
@@ -65,23 +43,11 @@ export default class CandidatesTbody extends Reat.Component {
                     switch (key) {
                         case "status":
                             row.push(<td key={cellKey}>
-                                <div className="ui buttons">
-                                    <button id="reject"
-                                            className={_.isEqual(candidate['status'], "REJECTED") ?
-                                                "ui negative button" :
-                                                "ui button"}
-                                            onClick={self.onStatusChange.bind(self, candidate["id"], false)}>
-                                        Reject
-                                    </button>
-                                    <div className="or"></div>
-                                    <button id="approve"
-                                            className={_.isEqual(candidate['status'], "ACCEPTED") ?
-                                                "ui positive button" :
-                                                "ui button"}
-                                            onClick={self.onStatusChange.bind(self, candidate["id"], true)}>
-                                        Accept
-                                    </button>
-                                </div>
+                                <AcceptRejectButtonGroup key={self.generateId()}
+                                    candidateStatus={candidate["status"]}
+                                    candidateId={candidate["id"]}
+                                    onCandidateStatusChange={(id, status)=>self.props.onCandidateStatusChange(id, status)}
+                                />
                             </td>);
                             break;
                         case "source":

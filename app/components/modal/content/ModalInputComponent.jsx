@@ -21,7 +21,7 @@ export default class ModalInputComponent extends React.Component {
                         <InputField
                             inputType="text"
                             placeholder=""
-                            onBlur={(event)=>this.props.onChangeField(event)}
+                            onChange={(event)=>this.props.onChangeField(event)}
                         />
                     </div>
                 </div>

@@ -1,6 +1,6 @@
-import Reat, {PropTypes} from 'react'
+import {Component, PropTypes} from 'react'
 
-export default class QueriesThead extends Reat.Component {
+export default class QueriesThead extends Component {
 
     onSortChange(self, id) {
         var icon = $("#" + id['key'] + " > i");
@@ -35,8 +35,8 @@ export default class QueriesThead extends Reat.Component {
                     {sortIndex}
                 </th>
             )
-        })
-        header_items.push(<th key={"empty"}></th>)
+        });
+        header_items.push(<th key={"empty"}></th>);
         return <tr>{header_items}</tr>
     }
 
