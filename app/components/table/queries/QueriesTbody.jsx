@@ -91,6 +91,15 @@ export default class QueriesTbody extends React.Component {
                         return self.getLastUpdateDate(query, index, row_index);
                         break;
 
+                    case "firm_name":
+                        return (
+                            <td key={self.generateId()}
+                                id={index + row_index}>
+                                <a target="_blank" href={query["url"]}>{query[columnName]}</a>
+                            </td>
+                        );
+                        break;
+
                     default:
                         return (
                             <td className={className}

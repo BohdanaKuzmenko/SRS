@@ -8,20 +8,22 @@ export default class AddCandidateQueryModal extends React.Component {
         super(props);
         this.state = {
             user: {
-                firstName: null,
-                lastName: null,
-                middleName: "",
-                url: null,
-                firmName: null,
-                agencyName: null,
-                backdoor: false
+                firstName: {label: "First Name", value: null, valid: true, important: true},
+                lastName: {label: "Last Name", value: null, valid: true, important: true},
+                middleName: {label: "Middle Name", value: "", valid: true, important: false},
+                url: {label: "Url", value: null, valid: true, important: true},
+                firmName: {label: "Company Name", value: null, valid: true, important: true},
+                agencyName: {label: "Client Name", value: null, valid: true, important: true},
+                backdoor: {label: "", value: false, valid: true, important: false}
             }
         }
     }
 
-    onFirstName(event, field_name) {
+    onInputChange(event, field_name) {
         var user = $.extend({}, this.state.user);
-        user[field_name] = (_.isEmpty(event.target.value)) ? null : event.target.value;
+        var defaultValue = user[field_name]["important"] ? null : "";
+        user[field_name]["value"] = (_.isEmpty(event.target.value)) ? defaultValue : event.target.value;
+        user[field_name]["valid"] = !(user[field_name]["important"] && _.isNull(user[field_name]["value"]))
         if (this.state.user != user) {
             this.setState({
                 "user": user
@@ -31,27 +33,33 @@ export default class AddCandidateQueryModal extends React.Component {
 
     onSubmit() {
         var self = this;
-        var user_init_completed = true;
+        var invalid_field = [];
+        var user = $.extend({}, this.state.user);
 
         Object.keys(this.state.user).map(function (key) {
-            if (!_.isEqual(key, 'middleName')){
-                if (_.isNull(self.state.user[key])) {
-                    user_init_completed = false
+            if (self.state.user[key]["important"]) {
+                if (_.isNull(self.state.user[key]["value"])) {
+                    invalid_field.push(key);
+                    user[key]["valid"] = false
                 }
             }
 
         });
-        if (user_init_completed) {
-            this.props.func(this.state.user);
+        if (_.isEmpty(invalid_field)) {
+            var exportUser = {};
+            Object.keys(this.state.user).map(function (key) {
+                exportUser[key] = self.state.user[key]["value"]
+            });
+            this.props.func(exportUser);
             this.setState({
                 "user": {
-                    firstName: null,
-                    lastName: null,
-                    middleName: "",
-                    url: null,
-                    firmName: null,
-                    agencyName: null,
-                    backdoor: false
+                    firstName: {label: "First Name", value: null, valid: true, important: true},
+                    lastName: {label: "Last Name", value: null, valid: true, important: true},
+                    middleName: {label: "Middle Name", value: "", valid: true, important: false},
+                    url: {label: "Url", value: "", valid: true, important: true},
+                    firmName: {label: "Company Name", value: null, valid: true, important: true},
+                    agencyName: {label: "Client Name", value: null, valid: true, important: true},
+                    backdoor: {label: "", value: false, valid: true, important: false}
                 }
             });
             $('#user-form').find('input:text').val('');
@@ -59,51 +67,45 @@ export default class AddCandidateQueryModal extends React.Component {
                 .modal('toggle')
             ;
         }
+        else {
+            this.setState({
+                "user": user
+            })
+        }
     }
 
+    // shouldComponentUpdate(props, state){
+    //     return !_.isEqual(this.state.user, state.user)
+    // }
+
     render() {
+        var self = this;
+        var fields = Object.keys(this.state.user).map(function (key) {
+            if (!_.isEqual(key, "backdoor")) {
+                var className = (self.state.user[key]["valid"]) ?
+                    "ui inline fluid input field" :
+                    "ui inline fluid input error field";
+                return (
+                    <ModalInputComponent key={key}
+                                         fieldTitle={self.state.user[key]["label"]}
+                                         onChangeField={(value)=>self.onInputChange(value, key)}
+                                         important={self.state.user[key]["important"]}
+                                         className={className}
+                    />
+                )
+            }
+        });
+
+
         return (
             <div>
-                <div id ="user-form" className="ui grid">
-                    <ModalInputComponent
-                        fieldTitle="First Name"
-                        onChangeField={(value)=>this.onFirstName(value, "firstName")}
-                        important={true}
-                    />
-                    <ModalInputComponent
-                        fieldTitle="Last Name"
-                        onChangeField={(value)=>this.onFirstName(value, "lastName")}
-                        important={true}
-                    />
-                    <ModalInputComponent
-                        fieldTitle="Middle Name&nbsp;&nbsp;"
-                        onChangeField={(value)=>this.onFirstName(value, "middleName")}
-                        important={false}
-                    />
-                    <ModalInputComponent
-                        fieldTitle="Url"
-                        onChangeField={(value)=>this.onFirstName(value, "url")}
-                        important={true}
-                    />
-                    <ModalInputComponent
-                        fieldTitle="Company Name"
-                        onChangeField={(value)=>this.onFirstName(value, "firmName")}
-                        important={true}
-                    />
-                    <ModalInputComponent
-                        fieldTitle="Client Name"
-                        onChangeField={(value)=>this.onFirstName(value, "agencyName")}
-                        important={true}
-                    />
-
-                </div>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <div className="submit-button">
-                    <Button buttonTitle="Save" submit={this.onSubmit.bind(this)}/>
+                <div id="user-form" className="ui grid">
+                    {fields}
+                    <div className="ui row">
+                        <div className="sixteen wide center aligned column">
+                            <Button buttonTitle="Save" submit={this.onSubmit.bind(this)}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

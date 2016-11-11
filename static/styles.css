@@ -3,6 +3,9 @@ body {
     font-family:Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 
 }
+body, html {
+    height: auto;
+}
 
 /*main_view*/
 .main.view > .content {
@@ -54,7 +57,7 @@ i.green.big.add.user.icon {
     margin-right: -0.4em;
 }
 
-i.green.big.file.excel.outline.icon {
+i.green.big.file.outline.icon {
     margin-right: -0.3em;
 }
 

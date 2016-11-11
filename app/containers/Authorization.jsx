@@ -105,7 +105,6 @@ export default class Authorization extends React.Component {
                         <form className="ui large form">
                             <div className="login">
                                 <div className="ui fluid input">
-
                                     <input
                                         key="login-area"
                                         type="text"

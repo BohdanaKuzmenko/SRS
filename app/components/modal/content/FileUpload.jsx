@@ -77,7 +77,9 @@ export default class FileUpload extends React.Component {
     }
 
     render() {
-
+        var button_class = (_.isNull(this.state.file)) ?
+            "ui vk button disabled fluid button" :
+            "ui vk button fluid button";
         var title_status;
         switch (this.state.fileStatus) {
             case "completed":
@@ -105,7 +107,7 @@ export default class FileUpload extends React.Component {
                 </div>
                 <div className="ui row">
                     <div className="center aligned column">
-                        <button id="upload-file" className="ui vk button fluid button" type="button"
+                        <button id="upload-file" className={button_class} type="button"
                                 onClick={this.onOpenClick.bind(this)}>
                             Send File
                         </button>

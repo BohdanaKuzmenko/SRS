@@ -32,9 +32,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             "_": "underscore",
             "React": "react",
-            "ReactDOM": "react-dom",
-            "Highcharts": "highcharts",
-            // "$":"jquery"
+            "ReactDOM": "react-dom"
         })
     ]
 };

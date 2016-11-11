@@ -10,14 +10,10 @@ export default class AcceptRejectButtonGroup extends Component {
     }
 
     onStatusChange(status) {
-        if (status) {
-            this.props.onCandidateStatusChange(this.props.candidateId, "ACCEPTED");
-            this.setState({candidateStatus: "ACCEPTED"})
-        }
-        else {
-            this.props.onCandidateStatusChange(this.props.candidateId, "REJECTED");
-            this.setState({candidateStatus: "REJECTED"})
-        }
+        this.props.onCandidateStatusChange(this.props.candidateId, status);
+        this.setState({candidateStatus: status})
+
+
     }
 
     render() {
@@ -32,13 +28,13 @@ export default class AcceptRejectButtonGroup extends Component {
             <div className="ui buttons">
                 <button id="reject"
                         className={acceptButtonClass}
-                        onClick={this.onStatusChange.bind(this, false)}>
+                        onClick={this.onStatusChange.bind(this, "REJECTED")}>
                     Reject
                 </button>
-                <div className="or"></div>
+                <div className="or" onClick={this.onStatusChange.bind(this, "NONE")}>></div>
                 <button id="approve"
                         className={rejectButtonClass}
-                        onClick={this.onStatusChange.bind(this, true)}>
+                        onClick={this.onStatusChange.bind(this, "ACCEPTED")}>
                     Accept
                 </button>
             </div>

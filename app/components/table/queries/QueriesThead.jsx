@@ -30,7 +30,8 @@ export default class QueriesThead extends Component {
         var header_items = Object.keys(header).map(function (key) {
             var sortIndex = _.isNull(header[key]["sortIndex"]) ? "" : "[" + header[key]["sortIndex"] + "]";
             return (
-                <th key={key} id={key} onClick={self.onSortChange.bind(null, self, {key})}>{header[key]["label"]}
+                <th key={key} id={key} onClick={self.onSortChange.bind(null, self, {key})}>
+                    {header[key]["label"]}
                     <i className="sort icon"/>
                     {sortIndex}
                 </th>

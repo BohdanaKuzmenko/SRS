@@ -9,7 +9,7 @@ export default class ModalInputComponent extends React.Component {
 
     render() {
         return (
-            <div className="ui row">
+            <div className="ui center aligned row">
                 <div className="six wide right aligned column">
                     <div className="ui text">
                         {this.props.fieldTitle}
@@ -17,7 +17,7 @@ export default class ModalInputComponent extends React.Component {
                     </div>
                 </div>
                 <div className="six wide column">
-                    <div className="ui inline fluid input field">
+                    <div className={this.props.className}>
                         <InputField
                             inputType="text"
                             placeholder=""
@@ -32,5 +32,6 @@ export default class ModalInputComponent extends React.Component {
 ModalInputComponent.propTypes={
     fieldTitle: PropTypes.string.isRequired,
     onChangeField: PropTypes.func.isRequired,
-    important: PropTypes.bool.isRequired
+    important: PropTypes.bool.isRequired,
+    className: PropTypes.string.isRequired
 };

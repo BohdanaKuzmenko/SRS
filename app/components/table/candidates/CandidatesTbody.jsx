@@ -31,7 +31,7 @@ export default class CandidatesTbody extends Component {
         });
 
 
-        return  Object.keys(groupById).map(function (name) {
+        return Object.keys(groupById).map(function (name) {
             return groupById[name].map(function (candidate, index) {
                 var row = [];
                 var key = self.generateId();
@@ -44,9 +44,9 @@ export default class CandidatesTbody extends Component {
                         case "status":
                             row.push(<td key={cellKey}>
                                 <AcceptRejectButtonGroup key={self.generateId()}
-                                    candidateStatus={candidate["status"]}
-                                    candidateId={candidate["id"]}
-                                    onCandidateStatusChange={(id, status)=>self.props.onCandidateStatusChange(id, status)}
+                                                         candidateStatus={candidate["status"]}
+                                                         candidateId={candidate["id"]}
+                                                         onCandidateStatusChange={(id, status)=>self.props.onCandidateStatusChange(id, status)}
                                 />
                             </td>);
                             break;
@@ -55,25 +55,19 @@ export default class CandidatesTbody extends Component {
                                 case "LINKEDIN":
                                     row.push(
                                         <td key={cellKey}>
-                                            <a target="_blank" href={candidate["url"]}>
-                                               LinkedIn
-                                            </a>
+                                            <a target="_blank" href={candidate["url"]}> LinkedIn</a>
                                         </td>);
                                     break;
                                 case "FACEBOOK":
                                     row.push(
                                         <td key={cellKey}>
-                                            <a target="_blank" href={candidate["url"]}>
-                                                Facebook
-                                            </a>
+                                            <a target="_blank" href={candidate["url"]}>Facebook</a>
                                         </td>);
                                     break;
                                 case "CUSTOM":
                                     row.push(
                                         <td key={cellKey}>
-                                            <a target="_blank" href={candidate["url"]}>
-                                                {candidate["matched_firm"]}
-                                            </a>
+                                            <a target="_blank" href={candidate["url"]}>{candidate["matched_firm"]}</a>
                                         </td>);
                                     break;
                                 case "EMAIL":

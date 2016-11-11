@@ -61,7 +61,7 @@ export default class Queries extends React.Component {
         }
     }
 
-    generateRequestsUrl() {
+    getParamsString(){
         var queryParams = $.extend({}, this.state.requestParams);
         var notNullParams = [];
         Object.keys(queryParams).map(function (key) {
@@ -69,11 +69,21 @@ export default class Queries extends React.Component {
                 notNullParams.push(queryParams[key]["paramKey"] + "=" + queryParams[key]["paramValue"])
             }
         });
+        return notNullParams.join("&")
+    }
 
-        return (_.isNull(notNullParams)) ?
+    generateRequestsUrl() {
+        var requestParams = this.getParamsString();
+        return (_.isEmpty(requestParams)) ?
         QUERY + "/?pageSize=" + this.state.pageSize :
-        QUERY + "/?pageSize=" + this.state.pageSize + "&" + notNullParams.join("&");
+        QUERY + "/?pageSize=" + this.state.pageSize + "&" + requestParams;
 
+    }
+
+    generateExportUrl(){
+        var requestParams = this.getParamsString();
+        return (_.isEmpty(requestParams)) ?
+            EXPORT : EXPORT + "/?" + requestParams;
     }
 
 
@@ -298,10 +308,10 @@ export default class Queries extends React.Component {
                         </div>
 
                     </a>
-                    <a className="item" href={EXPORT}>
-                        <i className="green big file excel outline icon"/>
+                    <a className="item" href={this.generateExportUrl()}>
+                        <i className="green big file outline icon"/>
                         <div className="vertical-text">
-                            Export to excel
+                            Export to CSV
                         </div>
                     </a>
                 </div>

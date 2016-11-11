@@ -50,7 +50,7 @@ export default class Settings extends React.Component {
     }
 
     onEmailEntered(email) {
-        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var regex = /^[A-Za-z](([(\\.\-\\_](?=\w)|\w){0,20})@((\w){1,20}([(\\.\-\\_](?=\w)\w{1,20}){0,4})\.\w{2,10}$/g;
         var wrongEmail = this.props.WRONG_EMAIL;
         var emptyEmail = this.props.INPUT_EMAIL;
         this.checkInput(email, regex, "email", "emailStatus", wrongEmail, emptyEmail)
@@ -116,6 +116,7 @@ export default class Settings extends React.Component {
                         <div className="six wide column">
                             <div id="email" className="ui inline input field">
                                 <InputField
+                                    className="ui fluid input"
                                     inputType="text"
                                     placeholder=""
                                     onChange={(event)=>this.onEmailEntered(event.target.value)}
@@ -133,6 +134,7 @@ export default class Settings extends React.Component {
                         <div className="six wide column">
                             <div id="checkDays" className="ui inline input field">
                                 <InputField
+                                    className="ui fluid input"
                                     inputType="text"
                                     placeholder=""
                                     onChange={(event)=>this.onCheckingPeriodEntered(event.target.value)}
