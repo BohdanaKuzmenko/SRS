@@ -15,8 +15,6 @@ export function GET(url, returnHeaders, async=true) {
                 responseData['nextPageUrl'] = request.getResponseHeader('X-Link-Next');
                 responseData['lastPageUrl'] = request.getResponseHeader('X-Link-Last');
                 responseData['itemsCount'] = request.getResponseHeader('X-Total-Count');
-
-
             } else {
                 responseData = response;
             }

@@ -4,7 +4,9 @@ export default class CandidatesThead extends Component {
 
     generateHeader(header) {
         var header_items = [];
-        header_items.push(<th className="three wide" key={"empty"}>Initial candidate</th>);
+        header_items.push(<th className="three wide" key={"name"}>Initial candidate</th>);
+        header_items.push(<th className="three wide" key={"client"}>Client</th>);
+        header_items.push(<th className="three wide" key={"agency"}>Company</th>);
         Object.keys(header).map(function (key) {
             var colClass = (!_.isEqual(key, "status"))? "":"one wide";
             header_items.push(<th key={key} className={colClass} id={key}>{header[key]["label"]}</th>)

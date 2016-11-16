@@ -10,7 +10,7 @@ export default class QueriesTfoot extends Component {
         return (
             <tfoot>
             <tr>
-                <th colSpan="9">
+                <th colSpan="11">
                     <div className="ui right floated pagination menu">
                         <a className="icon item" onClick={this.onPageChange.bind(this, "first")}>
                             <i className="angle double left icon"/>

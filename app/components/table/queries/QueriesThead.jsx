@@ -27,9 +27,11 @@ export default class QueriesThead extends Component {
 
     generateHeader(header) {
         var self = this;
-        var header_items = Object.keys(header).map(function (key) {
+        var header_items = []
+        header_items.push(<th key={"recheck_candidate"}></th>);
+        Object.keys(header).map(function (key) {
             var sortIndex = _.isNull(header[key]["sortIndex"]) ? "" : "[" + header[key]["sortIndex"] + "]";
-            return (
+            header_items.push(
                 <th key={key} id={key} onClick={self.onSortChange.bind(null, self, {key})}>
                     {header[key]["label"]}
                     <i className="sort icon"/>
@@ -37,7 +39,7 @@ export default class QueriesThead extends Component {
                 </th>
             )
         });
-        header_items.push(<th key={"empty"}></th>);
+        // header_items.push(<th key={"delete_candidate"}></th>);
         return <tr>{header_items}</tr>
     }
 

@@ -22,7 +22,7 @@ export default class QueriesTable extends Component {
                             onChange={(event)=>this.onChange(event)}/>
                     </div>
                 </div>
-                <table className="ui center aligned striped celled  selectable right-definition unstackable table">
+                <table className="ui center aligned striped celled  selectable unstackable table">
                     <Thead
                         tableHeaders={this.props.tableHeaders}
                         updateSortOrder={(id, order)=>this.props.updateSortOrder(id, order)}
@@ -32,6 +32,8 @@ export default class QueriesTable extends Component {
                         tableHeader={this.props.tableHeaders}
                         lastUpdateDateHeaders={this.props.lastUpdateDateHeaders}
                         onQueryDelete={(id)=>this.props.onQueryDelete(id)}
+                        onQueryRecheck={(id)=>this.props.onQueryRecheck(id)}
+                        currentPageUrl={this.props.currentPageUrl}
                     />
                     <Tfoot
                         onChangePage={(page)=>this.props.onChangePage(page)}
@@ -49,6 +51,7 @@ QueriesTable.propTypes = {
     updateSortOrder: PropTypes.func.isRequired,
     onChangePage: PropTypes.func.isRequired,
     onQueryDelete: PropTypes.func.isRequired,
-    onFilterChange: PropTypes.func.isRequired
-
+    onQueryRecheck: PropTypes.func.isRequired,
+    onFilterChange: PropTypes.func.isRequired,
+    currentPageUrl: PropTypes.string.isRequired
 };

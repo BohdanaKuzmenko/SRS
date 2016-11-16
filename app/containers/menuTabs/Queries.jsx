@@ -9,6 +9,7 @@ import FileUpload from 'components/modal/content/FileUpload.jsx'
 
 export default class Queries extends React.Component {
     constructor(props) {
+        var pageSize = 15;
         super(props);
         this.state = {
             currentPage: null,
@@ -17,7 +18,7 @@ export default class Queries extends React.Component {
             previousPage: null,
             nextPage: null,
             lastPage: null,
-            pageSize: 15,
+            pageSize: pageSize,
             requestParams: {
                 requestSortParams: null,
                 filterParams: null
@@ -39,7 +40,9 @@ export default class Queries extends React.Component {
                 facebook_check_date: "Facebook",
                 linkedin_check_date: "LinkedIn",
                 email_check_date: "Email"
-            }
+            },
+
+            currentPageUrl: QUERY + "/?pageSize=" + pageSize
 
         }
     }
@@ -74,9 +77,11 @@ export default class Queries extends React.Component {
 
     generateRequestsUrl() {
         var requestParams = this.getParamsString();
-        return (_.isEmpty(requestParams)) ?
+        var url = (_.isEmpty(requestParams)) ?
         QUERY + "/?pageSize=" + this.state.pageSize :
         QUERY + "/?pageSize=" + this.state.pageSize + "&" + requestParams;
+        this.setState({"currentPageUrl":url})
+        return url;
 
     }
 
@@ -113,11 +118,14 @@ export default class Queries extends React.Component {
     onQueryDelete(id) {
         DELETE(QUERY + '/' + id);
         this.updateTable()
+    }
 
+    onQueryRecheck(id) {
+       POST([QUERY,id,'recheck'].join('/'))
     }
 
     componentWillMount() {
-        this.getTableData(QUERY + "/?pageSize=" + this.state.pageSize)
+        this.getTableData(this.state.currentPageUrl)
     }
 
     updateSortOrder(id, order) {
@@ -170,21 +178,25 @@ export default class Queries extends React.Component {
         switch (pageStatus) {
             case "first":
                 if (!_.isNull(this.state.firstPage)) {
+                    this.setState({"currentPageUrl":this.state.firstPage});
                     this.getTableData(this.state.firstPage)
                 }
                 break;
             case "previous":
                 if (!_.isNull(this.state.previousPage)) {
+                    this.setState({"currentPageUrl":this.state.previousPage});
                     this.getTableData(this.state.previousPage)
                 }
                 break;
             case "next":
                 if (!_.isNull(this.state.nextPage)) {
+                    this.setState({"currentPageUrl":this.state.nextPage});
                     this.getTableData(this.state.nextPage)
                 }
                 break;
             case "last":
                 if (!_.isNull(this.state.lastPage)) {
+                    this.setState({"currentPageUrl":this.state.lastPage});
                     this.getTableData(this.state.lastPage)
                 }
                 break;
@@ -267,7 +279,9 @@ export default class Queries extends React.Component {
                        updateSortOrder={(id, order)=>this.updateSortOrder(id, order)}
                        onChangePage={(page) => this.onChangePage(page)}
                        onQueryDelete={(id)=> this.onQueryDelete(id)}
+                       onQueryRecheck={(id)=> this.onQueryRecheck(id)}
                        onFilterChange={(filter)=>this.onFilterChange(filter)}
+                       currentPageUrl={this.state.currentPageUrl}
                 />
                 <ModalWindow
                     key="add-manually"

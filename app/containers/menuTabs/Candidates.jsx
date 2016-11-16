@@ -98,7 +98,6 @@ export default class Candidates extends React.Component {
         }
         return (
             <div id="matches">
-
                 <CandidatesTable
                     candidatesHeaders={this.state.candidatesHeaders}
                     queriesHeaders={this.state.queriesHeaders}
@@ -108,7 +107,6 @@ export default class Candidates extends React.Component {
                     onCandidateStatusChange={(id, status)=> this.onCandidateStatusChange(id, status)}
                     onChangePage={(status)=> this.onChangePage(status)}
                 />
-
             </div>
         )
     }

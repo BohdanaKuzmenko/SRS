@@ -12,31 +12,38 @@ export default class CandidatesTbody extends Component {
 
     generateBody(queries, candidates, queries_header, candidates_header) {
         var self = this;
-        var idToName = {};
+
+
+        var queryInfoById = {};
         queries.map(function (person) {
-            idToName[person["id"]] = Object.keys(queries_header).map(function (header) {
+            queryInfoById[person["id"]] = {};
+            queryInfoById[person["id"]]["name"] = Object.keys(queries_header).map(function (header) {
                 return person[header]
             }).join(" ");
-        });
+            queryInfoById[person["id"]]["agency_name"] = person["agency_name"];
+            queryInfoById[person["id"]]["firm_name"] = person["firm_name"];
+            queryInfoById[person["id"]]["url"] = person["url"];
 
+
+        });
         var groupById = {};
 
         candidates.map(function (candidate) {
-            var id = candidate["query_id"].toString();
-            var key = idToName[id];
-            if (!_.contains(Object.keys(groupById), key)) {
-                groupById[key] = [];
+            var id = candidate["query_id"];
+            if (!_.contains(Object.keys(groupById), id)) {
+                groupById[id] = [];
             }
-            groupById[key].push(candidate);
+            groupById[id].push(candidate);
         });
 
-
-        return Object.keys(groupById).map(function (name) {
-            return groupById[name].map(function (candidate, index) {
+        return Object.keys(groupById).map(function (id) {
+            return groupById[id].map(function (candidate, index) {
                 var row = [];
-                var key = self.generateId();
                 if (index == 0) {
-                    row.push(<td key={key} rowSpan={groupById[name].length}>{name}</td>)
+                    row.push(<td key={self.generateId()} rowSpan={groupById[id].length}>{queryInfoById[id]["name"]}</td>)
+                    row.push(<td key={self.generateId()} rowSpan={groupById[id].length}>{queryInfoById[id]["agency_name"]}</td>)
+                    var url = queryInfoById[id]["url"].startsWith("http")? queryInfoById[id]["url"] : "http://" + queryInfoById[id]["url"]
+                    row.push(<td key={self.generateId()} rowSpan={groupById[id].length}> <a target="_blank" href={url}>{queryInfoById[id]["firm_name"]}</a></td>)
                 }
                 Object.keys(candidates_header).map(function (key) {
                     var cellKey = self.generateId();
