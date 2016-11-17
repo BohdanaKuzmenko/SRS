@@ -72,6 +72,11 @@ export default class FileUpload extends React.Component {
                     fileStatus: null
                 });
                 self.props.updateTable();
+            }, function(error){
+                $.jGrowl("File has not been processed because of: " + error.responseJSON.message, {
+                    sticky: true,
+                    position:'bottom-right'
+                });
             })
         }
     }

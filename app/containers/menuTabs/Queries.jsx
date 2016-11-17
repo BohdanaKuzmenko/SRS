@@ -41,6 +41,7 @@ export default class Queries extends React.Component {
                 linkedin_check_date: "LinkedIn",
                 email_check_date: "Email"
             },
+            queriesToDelete: [],
 
             currentPageUrl: QUERY + "/?pageSize=" + pageSize
 
@@ -53,8 +54,7 @@ export default class Queries extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return (!_.isEqual(this.state.queries, nextState.queries) || !_.isEqual(JSON.stringify(this.state.requestParams),
-                JSON.stringify(nextState.requestParams))) || !_.isEqual(this.state.tableHeaders, nextState.tableHeaders)
+        return (!_.isEqual(this.state.queries, nextState.queries) || !_.isEqual(JSON.stringify(this.state.requestParams), JSON.stringify(nextState.requestParams))) || !_.isEqual(this.state.tableHeaders, nextState.tableHeaders) || !_.isEqual(this.state.queriesToDelete, nextState.queriesToDelete)
 
     }
 
@@ -64,7 +64,7 @@ export default class Queries extends React.Component {
         }
     }
 
-    getParamsString(){
+    getParamsString() {
         var queryParams = $.extend({}, this.state.requestParams);
         var notNullParams = [];
         Object.keys(queryParams).map(function (key) {
@@ -80,12 +80,12 @@ export default class Queries extends React.Component {
         var url = (_.isEmpty(requestParams)) ?
         QUERY + "/?pageSize=" + this.state.pageSize :
         QUERY + "/?pageSize=" + this.state.pageSize + "&" + requestParams;
-        this.setState({"currentPageUrl":url})
+        this.setState({"currentPageUrl": url})
         return url;
 
     }
 
-    generateExportUrl(){
+    generateExportUrl() {
         var requestParams = this.getParamsString();
         return (_.isEmpty(requestParams)) ?
             EXPORT : EXPORT + "/?" + requestParams;
@@ -115,13 +115,27 @@ export default class Queries extends React.Component {
         });
     }
 
-    onQueryDelete(id) {
-        DELETE(QUERY + '/' + id);
-        this.updateTable()
+    addIdToDelete(id) {
+        var idsToDelete = this.state.queriesToDelete.slice();
+        if (_.contains(idsToDelete, id)) {
+            idsToDelete = _.without(idsToDelete, id)
+        } else {
+            idsToDelete.push(id);
+        }
+        this.setState({"queriesToDelete": idsToDelete})
+    }
+
+    onQueryDelete() {
+        if (!_.isEmpty(this.state.queriesToDelete)) {
+            var idsToDelete = this.state.queriesToDelete.join(',');
+            DELETE(QUERY + '/' + idsToDelete);
+            this.setState({"queriesToDelete": []});
+            this.updateTable()
+        }
     }
 
     onQueryRecheck(id) {
-       POST([QUERY,id,'recheck'].join('/'))
+        POST([QUERY, id, 'recheck'].join('/'))
     }
 
     componentWillMount() {
@@ -178,25 +192,25 @@ export default class Queries extends React.Component {
         switch (pageStatus) {
             case "first":
                 if (!_.isNull(this.state.firstPage)) {
-                    this.setState({"currentPageUrl":this.state.firstPage});
+                    this.setState({"currentPageUrl": this.state.firstPage});
                     this.getTableData(this.state.firstPage)
                 }
                 break;
             case "previous":
                 if (!_.isNull(this.state.previousPage)) {
-                    this.setState({"currentPageUrl":this.state.previousPage});
+                    this.setState({"currentPageUrl": this.state.previousPage});
                     this.getTableData(this.state.previousPage)
                 }
                 break;
             case "next":
                 if (!_.isNull(this.state.nextPage)) {
-                    this.setState({"currentPageUrl":this.state.nextPage});
+                    this.setState({"currentPageUrl": this.state.nextPage});
                     this.getTableData(this.state.nextPage)
                 }
                 break;
             case "last":
                 if (!_.isNull(this.state.lastPage)) {
-                    this.setState({"currentPageUrl":this.state.lastPage});
+                    this.setState({"currentPageUrl": this.state.lastPage});
                     this.getTableData(this.state.lastPage)
                 }
                 break;
@@ -282,6 +296,11 @@ export default class Queries extends React.Component {
                        onQueryRecheck={(id)=> this.onQueryRecheck(id)}
                        onFilterChange={(filter)=>this.onFilterChange(filter)}
                        currentPageUrl={this.state.currentPageUrl}
+                       onModal={(id)=>this.onModal(id)}
+                       exportUrl={this.generateExportUrl()}
+                       queriesToDelete={this.state.queriesToDelete}
+                       addIdToDelete={(id)=> this.addIdToDelete(id)}
+                       deleteQueries={()=>this.onQueryDelete()}
                 />
                 <ModalWindow
                     key="add-manually"
@@ -306,29 +325,6 @@ export default class Queries extends React.Component {
 
                 />
 
-                <div className="external ui right fixed vertical menu">
-                    <a className="item" onClick={this.onModal.bind(null, "add-from-file")}>
-                        <div className="vertical-text">
-                            <i className="green large plus icon"/>
-                            <i className="green large plus icon"/>
-                            Upload from file
-                        </div>
-
-                    </a>
-                    <a className="item" onClick={this.onModal.bind(null, "add-manually")}>
-                        <i className="green big add user icon"/>
-                        <div className="vertical-text">
-                            Add manually
-                        </div>
-
-                    </a>
-                    <a className="item" href={this.generateExportUrl()}>
-                        <i className="green big file outline icon"/>
-                        <div className="vertical-text">
-                            Export to CSV
-                        </div>
-                    </a>
-                </div>
             </div>
         )
     }

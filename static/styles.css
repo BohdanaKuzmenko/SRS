@@ -14,13 +14,11 @@ body, html {
 
 }
 .main.view > .content >#queries{
-    margin-right: 6rem;
+    margin-right: 0.5rem;
 }
 .main.view > .content >#matches{
     margin-right: 0.5rem;
 }
-
-
 
 
 /*menu*/
@@ -211,4 +209,24 @@ td {
 
 #delete-tooltip{
     z-index: 100;
+}
+
+.left-displecement {
+    margin-left: -8px!important;
+}
+.controls > a{
+    margin-left: 5px!important;
+    margin-right: 0px!important;
+}
+
+.jGrowl-notification {
+    background-color: #d02424;
+
+}
+.jGrowl {
+    z-index: 9999;
+    color: #fff;
+    font-size: 14px!important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    position: fixed;
 }

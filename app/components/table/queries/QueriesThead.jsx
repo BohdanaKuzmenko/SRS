@@ -27,7 +27,7 @@ export default class QueriesThead extends Component {
 
     generateHeader(header) {
         var self = this;
-        var header_items = []
+        var header_items = [];
         header_items.push(<th key={"recheck_candidate"}></th>);
         Object.keys(header).map(function (key) {
             var sortIndex = _.isNull(header[key]["sortIndex"]) ? "" : "[" + header[key]["sortIndex"] + "]";
@@ -39,7 +39,7 @@ export default class QueriesThead extends Component {
                 </th>
             )
         });
-        // header_items.push(<th key={"delete_candidate"}></th>);
+        header_items.push(<th key={"delete_candidate"}></th>);
         return <tr>{header_items}</tr>
     }
 
