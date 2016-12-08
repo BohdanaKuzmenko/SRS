@@ -17,7 +17,7 @@ export default class FileUpload extends React.Component {
 
     onDrop(acceptedFile) {
         var file = acceptedFile[0];
-        if (_.isEqual(file.type, "text/csv")){
+        if (file.name.endsWith("csv")){
             this.setState({
                 "file": file,
                 "fileStatus": "completed"
