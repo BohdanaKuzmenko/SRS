@@ -30,8 +30,8 @@ export default class Queries extends React.Component {
                 matches_found: {field: "candidates", label: "Found Matches", sortIndex: null, order: null},
                 load_date: {field: "loadDate", label: "Load Date", sortIndex: null, order: null},
                 last_check_date: {field: "lastCheckDate", label: "Last Check Update", sortIndex: null, order: null},
-                firm_name: {field: "firmName", label: "Company", sortIndex: null, order: null},
-                agency_name: {field: "agencyName", label: "Client", sortIndex: null, order: null},
+                firm_name: {field: "firmName", label: "Hiring Company", sortIndex: null, order: null},
+                agency_name: {field: "agencyName", label: "Our Client", sortIndex: null, order: null},
                 backdoor: {field: "backdoor", label: "Backdoor status", sortIndex: null, order: null}
             },
 
