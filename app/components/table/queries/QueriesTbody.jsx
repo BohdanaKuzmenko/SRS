@@ -35,6 +35,7 @@ export default class QueriesTbody extends React.Component {
         </div>)
     }
 
+
     getLastUpdateDate(query, index, row_index) {
         var self = this;
         var lastUpdateColumns = this.props.lastUpdateDateHeaders;
@@ -78,9 +79,12 @@ export default class QueriesTbody extends React.Component {
             var row = [];
             var id = query["id"];
             row.push(
-                <td key={self.generateId()}
-                    onClick={self.props.onQueryRecheck.bind(self, id)}>
-                    <i className="large green repeat icon"/>
+                <td key={self.generateId()}>
+                    <button className="ui white tiny circular basic icon button"
+                            onClick={self.props.onQueryRecheck.bind(self, id)}>
+                        <i className="large green repeat icon"/>
+                    </button>
+
                 </td>
             );
             Object.keys(header).map(function (columnName, row_index) {
@@ -125,12 +129,18 @@ export default class QueriesTbody extends React.Component {
                         )
                 }
             });
+            var checked = self.props.queriesToDelete.includes(id) ? "checked" : "";
             row.push(
-                <td key={self.generateId()} onClick={self.props.addIdToDelete.bind(self, id)}>
-                    <i className="remove large blue user icon"/>
+                <td key={self.generateId()}>
+                    <div className="ui checkbox">
+                        <input type="checkbox"
+                               onClick={self.props.addIdToDelete.bind(self, id)}
+                               defaultChecked={checked}/>
+                        <label></label>
+                    </div>
                 </td>
             );
-            var rowClass = self.props.queriesToDelete.includes(id) ? "negative" : "";
+            var rowClass = self.props.queriesToDelete.includes(id) ? "warning" : "";
             return (
                 <tr className={rowClass}
                     key={self.generateId()}

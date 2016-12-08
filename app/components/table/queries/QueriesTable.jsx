@@ -8,8 +8,36 @@ export default class QueriesTable extends Component {
     onChange(event) {
         this.props.onFilterChange(event.target.value)
     }
+    hidePopup() {
+        $('.custom.popup').popup('hide all');
+
+    }
+    deleteQueries(){
+        this.props.onQueryDelete();
+        this.hidePopup();
+
+    }
+
+    initializePopups() {
+        $('#delete-users')
+            .popup({
+                popup: $('.custom.popup'),
+                position: 'left center',
+                on: 'click',
+                inline: true
+            });
+    }
+
+    componentDidUpdate() {
+        this.initializePopups()
+    }
+
+    componentDidMount() {
+        this.initializePopups()
+    }
 
     render() {
+        var deleteButtonClass = (_.isEmpty(this.props.queriesToDelete))?"ui disabled icon button":"ui red icon button"
         return (
             <div>
                 <div className="column">
@@ -22,11 +50,23 @@ export default class QueriesTable extends Component {
                                         placeholder="Input word(s) you want to filter table by..."
                                         onChange={(event)=>this.onChange(event)}/>
 
-                                    <a className="ui red icon button"
+                                    <a id="delete-users" className={deleteButtonClass}
                                        data-tooltip="Remove candidate(s)"
                                        data-position="left center"
-                                       onClick={this.props.onQueryDelete}>
+                                       //onClick={this.props.onQueryDelete}>
+                                        >
                                         <i className="remove user icon"/>
+                                        <div className="ui custom popup hidden">
+                                            <div className="ui center aligned grid">
+                                                <div>Do you really want to delete selections?</div>
+                                                <div className="ui row">
+                                                    <button className="ui positive button"
+                                                            onClick={this.deleteQueries.bind(this)}>Yes
+                                                    </button>
+                                                    <button className="ui negative button" onClick={this.hidePopup.bind(this)}> No</button>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </a>
                                     <a className="ui green icon button"

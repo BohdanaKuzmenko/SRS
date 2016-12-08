@@ -87,8 +87,9 @@ export default class Queries extends React.Component {
 
     generateExportUrl() {
         var requestParams = this.getParamsString();
-        return (_.isEmpty(requestParams)) ?
-            EXPORT : EXPORT + "/?" + requestParams;
+        var exportIds = "id=" + this.state.queriesToDelete.join(',');
+        return (_.isEmpty(requestParams) && _.isEmpty(exportIds)) ?
+            EXPORT : EXPORT + "/?" + [requestParams, exportIds].join("&");
     }
 
 
